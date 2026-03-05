@@ -1,0 +1,23 @@
+section {
+    height: 100vh;
+    width: 100%;
+    background: #F8FAFC;
+}
+
+mat-toolbar{
+    height: 80px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img{
+        height: 120px;
+        object-fit: cover;
+    }
+}
+
+mat-form-field{
+    width: 50%;
+    margin-top: 20px;
+}
+

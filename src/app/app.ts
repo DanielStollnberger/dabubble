@@ -8,7 +8,7 @@ import { collection } from 'firebase/firestore';
   selector: 'app-root',
   imports: [
     RouterOutlet,
-    AsyncPipe
+    // AsyncPipe
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
@@ -16,7 +16,4 @@ import { collection } from 'firebase/firestore';
 export class App {
   protected readonly title = signal('dabubble');
 
-  firestore = inject(Firestore);
-  itemCollection = collection(this.firestore, 'items');
-  item$ = collectionData(this.itemCollection);
 }
