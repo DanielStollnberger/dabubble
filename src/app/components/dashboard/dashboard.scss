@@ -4,6 +4,40 @@ section {
     background: #F8FAFC;
 }
 
+.chat-answer-button{
+    position: absolute;
+    right: 20px;
+    top: 40%;
+    height: 250px;
+    width: 30px;
+    border-radius: 15px 0 0 15px;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+    background: rgb(0, 0, 0, 0.5);
+    cursor: pointer;
+    writing-mode: vertical-rl;
+    color: #F8FAFC;
+    &:hover{
+        background: rgb(0, 0, 0, 0.4);
+    }
+}
+
+.sidenav-button{
+    position: absolute;
+    left: 20px;
+    top: 40%;
+    height: 250px;
+    width: 30px;
+    border-radius: 0 15px 15px 0;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+    background: rgb(0, 0, 0, 0.5);
+    cursor: pointer;
+    writing-mode: vertical-rl;
+    color: #F8FAFC;
+    &:hover{
+        background: rgb(0, 0, 0, 0.4);
+    }
+}
+
 .main-content {
     width: calc(100% - 40px);
     padding: 20px;
@@ -21,12 +55,19 @@ section {
     
 
     app-main-chat {
-        width: calc(100% - 300px);
+        flex: 1;
         background: rgba(156, 1, 156, 0.21);
         height: calc(100vh - 120px);
         border-radius: 20px;
         &.sidenav-closed{
             width: 100%;
         }
+    }
+
+    app-chat-answers{
+        width: 350px;
+        background: rgba(156, 1, 156, 0.21);
+        height: calc(100vh - 120px);
+        border-radius: 20px;
     }
 }

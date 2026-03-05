@@ -8,6 +8,7 @@ import { UserProfile } from '../user-profile/user-profile';
 import { Sidenav } from './sidenav/sidenav';
 import { MainChat } from './main-chat/main-chat';
 import { Header } from './header/header';
+import { ChatAnswers } from './chat-answers/chat-answers';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,15 +21,21 @@ import { Header } from './header/header';
     MatButtonModule,
     Sidenav,
     Header,
-    MainChat
+    MainChat,
+    ChatAnswers
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
 export class Dashboard {
-  isOpen: boolean = true;
+  sidenavIsOpen: boolean = true;
+  openChatAnswers: boolean = false;
 
-  toggleSidenav(){
-console.log('hi');
+  toggleSidenav() {
+    this.sidenavIsOpen = !this.sidenavIsOpen
+  }
+
+  closeChatAnswers(){
+    this.openChatAnswers = false;
   }
 }

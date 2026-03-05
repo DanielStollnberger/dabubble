@@ -1,0 +1,23 @@
+.sidenav-header{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 20px;
+    img{
+        height:60px;
+        object-fit: cover;
+        width: 60px;
+    }
+}
+
+h1{
+    font-size: 18px;
+}
+
+h2{
+    font-size: 16px;
+}
+
+section{
+    padding: 20px 10px;
+}

@@ -1,10 +1,20 @@
 <section>
     <app-header></app-header>
-    <button (click)="toggleSidenav()">dfsdf</button>
     <div class="main-content">
-        @if(isOpen){
+        @if (sidenavIsOpen) {
+        <button (click)="toggleSidenav()" class="sidenav-button">Close Chats</button>
+        } @else {
+        <button (click)="toggleSidenav()" class="sidenav-button">Open Chats</button>
+        }
+        @if(sidenavIsOpen){
         <app-sidenav></app-sidenav>
         }
-        <app-main-chat [class.sidenav-closed]="isOpen"></app-main-chat>
+        <app-main-chat [class.sidenav-closed]="!sidenavIsOpen"></app-main-chat>
+        @if (!openChatAnswers) {
+            @if (!openChatAnswers) {
+                <button (click)="closeChatAnswers()" class="chat-answer-button">Close Answers</button>
+            }
+        <app-chat-answers></app-chat-answers>
+        }
     </div>
 </section>
