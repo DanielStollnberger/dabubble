@@ -1,0 +1,10 @@
+<section>
+    <app-header></app-header>
+    <button (click)="toggleSidenav()">dfsdf</button>
+    <div class="main-content">
+        @if(isOpen){
+        <app-sidenav></app-sidenav>
+        }
+        <app-main-chat [class.sidenav-closed]="isOpen"></app-main-chat>
+    </div>
+</section>

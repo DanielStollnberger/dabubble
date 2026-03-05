@@ -1,0 +1,32 @@
+section {
+    height: 100vh;
+    width: 100%;
+    background: #F8FAFC;
+}
+
+.main-content {
+    width: calc(100% - 40px);
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+
+    app-sidenav {
+        width: 300px;
+        background: rgba(156, 1, 156, 0.21);
+        height: calc(100vh - 120px);
+        border-radius: 20px;
+    }
+    
+
+    app-main-chat {
+        width: calc(100% - 300px);
+        background: rgba(156, 1, 156, 0.21);
+        height: calc(100vh - 120px);
+        border-radius: 20px;
+        &.sidenav-closed{
+            width: 100%;
+        }
+    }
+}
