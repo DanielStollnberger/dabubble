@@ -1,8 +1,24 @@
-section{
-    display: flex;
-    justify-content: space-between;
-    div{
+section {
+    cursor: pointer;
+    div {
         display: flex;
         align-items: center;
+    }
+}
+
+.directs{
+    align-items: center;
+    gap: 10px;
+    display: flex;
+    padding: 5px 0 5px 30px;
+    cursor: pointer;
+    border-radius: 5px;
+    &:hover{
+        background: rgb(0, 0, 0, 0.1);
+    }
+    img{
+        height: 60px;
+        width: 40px;
+        object-fit: cover;
     }
 }

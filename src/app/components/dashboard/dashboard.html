@@ -10,8 +10,8 @@
         <app-sidenav></app-sidenav>
         }
         <app-main-chat [class.sidenav-closed]="!sidenavIsOpen"></app-main-chat>
-        @if (!openChatAnswers) {
-            @if (!openChatAnswers) {
+        @if (openChatAnswers) {
+            @if (openChatAnswers) {
                 <button (click)="closeChatAnswers()" class="chat-answer-button">Close Answers</button>
             }
         <app-chat-answers></app-chat-answers>

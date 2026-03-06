@@ -1,12 +1,24 @@
-<section>
-    <div>
+<div class="channel-header">
+  <div class="dropdown-channel-header" (click)="toggleChannels()">
     <button matIconButton>
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
     <mat-icon>bolt</mat-icon>
     <span>Channels</span>
-    </div>
-    <button matIconButton>
-      <mat-icon>add</mat-icon>
-    </button>
+  </div>
+  <button matIconButton (click)="addChannel()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+<section>
+  @for (channel of (channel$ | async); track channel.id) {
+  <div class="channels">
+    <mat-icon>select_all</mat-icon>
+    {{ channel.name }}
+  </div>
+  }
+  <div class="channels" (click)="addChannel()">
+    <mat-icon>add_circle</mat-icon>
+    Add Channel
+  </div>
 </section>

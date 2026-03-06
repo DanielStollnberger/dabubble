@@ -1,5 +1,11 @@
 
+section{
+    background: #964901;
+}
+
 mat-toolbar {
+    max-width: 1440px;
+    margin: auto;
     height: 80px;
     width: 100%;
     display: flex;

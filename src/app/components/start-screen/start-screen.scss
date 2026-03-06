@@ -1,0 +1,24 @@
+.auth-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--mat-sys-surface);
+  }
+  
+  .auth-card {
+    width: 420px;
+    padding: 16px;
+  }
+  
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  
+  .login-btn {
+    width: 100%;
+    height: 48px;
+  }

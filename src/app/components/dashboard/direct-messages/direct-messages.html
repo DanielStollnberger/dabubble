@@ -1,9 +1,17 @@
-<section>
-    <div>
+<section class="directs-section">
+  <div (click)="toggleDirects()">
     <button matIconButton>
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
     <mat-icon>person</mat-icon>
-    <span>Channels</span>
-    </div>
+    <span>Direct Messages</span>
+  </div>
+</section>
+<section>
+  @for (chat of (direct$ | async); track chat.id) {
+  <div class="directs">
+    <img src="assets/img/profile.png">
+    {{ chat.name }}
+  </div>
+  }
 </section>

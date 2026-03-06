@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UserProfile } from '../../user-profile/user-profile';
+import { UserProfile } from './user-profile/user-profile';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';

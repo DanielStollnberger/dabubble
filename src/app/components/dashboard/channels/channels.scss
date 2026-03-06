@@ -1,8 +1,21 @@
-section{
+.channel-header{
     display: flex;
     justify-content: space-between;
-    div{
+    .dropdown-channel-header{
         display: flex;
         align-items: center;
+        cursor: pointer;
+    }
+}
+
+.channels{
+    align-items: center;
+    gap: 5px;
+    display: flex;
+    padding: 5px 0 5px 30px;
+    cursor: pointer;
+    border-radius: 5px;
+    &:hover{
+        background: rgb(0, 0, 0, 0.1);
     }
 }

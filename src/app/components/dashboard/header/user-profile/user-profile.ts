@@ -5,6 +5,7 @@ import { MatIconButton } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { collection, doc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
+import { DashboardStateService } from '../../../../services/shared/dashboard-state.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -19,9 +20,12 @@ import { Observable } from 'rxjs';
 export class UserProfile {
   item$!: Observable<any>;
   firestore = inject(Firestore);
-  userDoc = doc(this.firestore, 'users/WBHA1uDY1l9RqhlAWNC0');
-  
+  dashboardState = inject(DashboardStateService);
+  userId = this.dashboardState.userId;
+  userDoc:any;
+
   constructor() {
+    this.userDoc = doc(this.firestore, 'users/' + this.userId());
     this.item$ = docData(this.userDoc);
   }
 }

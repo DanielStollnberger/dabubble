@@ -39,6 +39,9 @@ section {
 }
 
 .main-content {
+    position: relative;
+    max-width: 1440px;
+    margin:auto;
     width: calc(100% - 40px);
     padding: 20px;
     border-radius: 20px;
@@ -48,7 +51,7 @@ section {
 
     app-sidenav {
         width: 300px;
-        background: rgba(156, 1, 156, 0.21);
+        background: rgba(150, 73, 1, 0.2);
         height: calc(100vh - 120px);
         border-radius: 20px;
     }
@@ -56,7 +59,7 @@ section {
 
     app-main-chat {
         flex: 1;
-        background: rgba(156, 1, 156, 0.21);
+        background: rgba(150, 73, 1, 0.2);
         height: calc(100vh - 120px);
         border-radius: 20px;
         &.sidenav-closed{
@@ -66,7 +69,7 @@ section {
 
     app-chat-answers{
         width: 350px;
-        background: rgba(156, 1, 156, 0.21);
+        background: rgba(150, 73, 1, 0.2);
         height: calc(100vh - 120px);
         border-radius: 20px;
     }
