@@ -12,7 +12,7 @@
 </div>
 <section>
   @for (channel of (channel$ | async); track channel.id) {
-  <div class="channels">
+  <div class="channels" (click)="openChat(channel.id)">
     <mat-icon>select_all</mat-icon>
     {{ channel.name }}
   </div>

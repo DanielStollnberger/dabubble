@@ -1,7 +1,8 @@
-<mat-toolbar>
+@if (chatId()) {
+<mat-toolbar class="main-header">
     <div>
         <mat-icon>select_all</mat-icon>
-        <span>construcrtion</span>
+        <span>construction</span>
         <button matIconButton>
             <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
@@ -12,3 +13,46 @@
         </button>
     </div>
 </mat-toolbar>
+<section class="chat-section">
+
+</section>
+} @else{
+<mat-toolbar class="main-header new-message">
+    <h1>New Massage</h1>
+    <div class="placeholder-message">
+        <mat-form-field>
+            <mat-label>...to Channel, Direct or new @email</mat-label>
+            <input matInput placeholder="...">
+        </mat-form-field>
+        <div>
+            <button matIconButton>
+                <mat-icon>send</mat-icon>
+            </button>
+        </div>
+    </div>
+</mat-toolbar>
+}
+<section class="content">
+    <form class="example-form">
+        <mat-form-field class="example-full-width">
+            <mat-label>Send message to #construction</mat-label>
+            <textarea matInput placeholder="..."></textarea>
+        </mat-form-field>
+        <mat-toolbar class="message-toolbar">
+            <button matIconButton>
+                <mat-icon>add</mat-icon>
+            </button>
+            <span>|</span>
+            <button matIconButton>
+                <mat-icon>add_reaction</mat-icon>
+            </button>
+            <button matIconButton>
+                <mat-icon>alternate_email</mat-icon>
+            </button>
+            <div class="space-between"></div>
+            <button matIconButton>
+                <mat-icon>send</mat-icon>
+            </button>
+        </mat-toolbar>
+    </form>
+</section>

@@ -24,7 +24,7 @@ export class Channels {
   firestore = inject(Firestore);
   dashboardState = inject(DashboardStateService);
   userId = this.dashboardState.userId;
-  channelCollect:any;
+  channelCollect: any;
 
   constructor() {
     this.channelCollect = collection(this.firestore, 'users/' + this.userId() + '/channels');
@@ -37,5 +37,10 @@ export class Channels {
 
   addChannel() {
     console.log('added channel');
+  }
+
+  openChat(id: any) {
+    this.dashboardState.chatId.set(id);
+    console.log(this.dashboardState.chatId);
   }
 }
