@@ -41,6 +41,5 @@ export class Channels {
 
   openChat(id: any) {
     this.dashboardState.chatId.set(id);
-    console.log(this.dashboardState.chatId);
   }
 }
