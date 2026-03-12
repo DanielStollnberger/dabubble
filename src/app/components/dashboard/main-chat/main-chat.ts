@@ -29,17 +29,42 @@ export class MainChat {
   firestore = inject(Firestore);
   dashboardState = inject(DashboardStateService);
   chatId = this.dashboardState.chatId;
+  channelId = this.dashboardState.channelId;
+  userId = this.dashboardState.userId;
   chatDoc: any;
 
   chat$ = computed(() => {
-    this.chatDoc = doc(this.firestore, 'channels/' + this.chatId());
-    return docData(this.chatDoc);
+
+    if (this.dashboardState.chatType() === 'channel') {
+      const docRef = doc(this.firestore, 'channels/' + this.channelId());
+      return docData(docRef);
+    }
+
+    if (this.dashboardState.chatType() === 'direct') {
+      const docRef = doc(this.firestore, 'users/' + this.userId() + '/directs/' + this.chatId());
+      return docData(docRef);
+    }
+
+    return null;
   });
 
   messages$ = computed(() => {
-    const messagesRef = collection(this.firestore, `channels/${this.chatId()}/messages`);
-    const q = query(messagesRef, orderBy('timestamp'));
-  
-    return collectionData(q, { idField: 'id' });
+
+
+    if (this.dashboardState.chatType() === 'channel') {
+      const messagesRef = collection(this.firestore, `channels/${this.channelId()}/messages`);
+      const q = query(messagesRef, orderBy('timestamp'));
+
+      return collectionData(q, { idField: 'id' });
+    }
+
+    if (this.dashboardState.chatType() === 'direct') {
+      const messagesRef = collection(this.firestore, 'users/' + this.userId() + '/directs/' + this.chatId() + '/messages');
+      const q = query(messagesRef, orderBy('timestamp'));
+
+      return collectionData(q, { idField: 'id' });
+    }
+
+    return null;
   });
 }

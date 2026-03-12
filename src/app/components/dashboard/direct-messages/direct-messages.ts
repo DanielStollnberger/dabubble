@@ -30,6 +30,12 @@ export class DirectMessages {
     this.directsCollect = collection(this.firestore, 'users/'+ this.userId() +'/directs');
     this.direct$ = collectionData(this.directsCollect, { idField: 'id' });
   }
+
+  openChat(id: string) {
+    this.dashboardState.chatId.set(id);
+    this.dashboardState.chatType.set('direct');
+  }
+
   toggleDirects() {
     console.log('toggled directs');
   }

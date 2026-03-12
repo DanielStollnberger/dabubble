@@ -39,7 +39,8 @@ export class Channels {
     console.log('added channel');
   }
 
-  openChat(id: any) {
-    this.dashboardState.chatId.set(id);
+  openChat(id: string) {
+    this.dashboardState.channelId.set(id);
+    this.dashboardState.chatType.set('channel');
   }
 }

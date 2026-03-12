@@ -1,11 +1,11 @@
-@if (chatId()) {
+@if (channelId() || chatId()) {
 <mat-toolbar class="main-header">
     <div>
         <mat-icon>select_all</mat-icon>
         <span>
             @if (chat$() | async; as chat) {
-                {{ chat['name'] }}
-              }
+            {{ chat['name'] }}
+            }
         </span>
         <button matIconButton>
             <mat-icon>keyboard_arrow_down</mat-icon>
@@ -19,12 +19,12 @@
 </mat-toolbar>
 <section class="chat-section">
     @if (messages$() | async; as messages) {
-        @for (message of messages; track message.id) {
-          <p>{{ message['text'] }}</p>
-        }
-      }
+    @for (message of messages; track message.id) {
+    <p>{{ message['text'] }}</p>
+    }
+    }
 </section>
-} @else{
+} @else {
 <mat-toolbar class="main-header new-message">
     <h1>New Massage</h1>
     <div class="placeholder-message">
