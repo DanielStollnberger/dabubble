@@ -6,7 +6,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { collection } from 'firebase/firestore';
 import { Observable } from 'rxjs';
-import { DashboardStateService } from '../../../services/shared/dashboard-state.service';
+import { DashboardStateService } from '../../../state/dashboard-state.service';
 
 @Component({
   selector: 'app-direct-messages',

@@ -6,7 +6,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { DashboardStateService } from '../../../services/shared/dashboard-state.service';
+import { DashboardStateService } from '../../../state/dashboard-state.service';
 import { Channel } from '../../../services/models/channel.model';
 import { User } from '../../../services/models/user.model';
 

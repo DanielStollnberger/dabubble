@@ -10,7 +10,7 @@ import { MainChat } from './main-chat/main-chat';
 import { Header } from './header/header';
 import { ChatAnswers } from './chat-answers/chat-answers';
 import { ActivatedRoute } from '@angular/router';
-import { DashboardStateService } from '../../services/shared/dashboard-state.service';
+import { DashboardStateService } from '../../state/dashboard-state.service';
 
 @Component({
   selector: 'app-dashboard',

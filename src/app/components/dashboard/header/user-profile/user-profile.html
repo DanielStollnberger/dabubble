@@ -1,8 +1,8 @@
 <div class="profile-div">
     <p>
-        
+        {{ (name$ | async)?.name }}
     </p>
-    <img src="assets/img/profile.png" style="margin-left: 10px;">
+    <img [src]="(name$ | async)?.avatar" style="margin-left: 10px;">
     <button matIconButton class="example-icon">
         <mat-icon style="color: white;">share</mat-icon>
     </button>

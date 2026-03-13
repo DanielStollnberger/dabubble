@@ -4,8 +4,8 @@ import { collectionData, docData, Firestore } from '@angular/fire/firestore';
 import { MatIconButton } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { collection, doc } from 'firebase/firestore';
-import { Observable } from 'rxjs';
-import { DashboardStateService } from '../../../../services/shared/dashboard-state.service';
+import { Observable, switchMap } from 'rxjs';
+import { DashboardStateService } from '../../../../state/dashboard-state.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -18,8 +18,15 @@ import { DashboardStateService } from '../../../../services/shared/dashboard-sta
   styleUrl: './user-profile.scss',
 })
 export class UserProfile {
+  name$!: Observable<any>;
   firestore = inject(Firestore);
+  dashboardStateService: any = inject(DashboardStateService);
+  userId = this.dashboardStateService.userId;
 
   constructor() {
+    this.userId = this.dashboardStateService.userId();
+
+    const userDoc = doc(this.firestore, `users/${this.userId}`);
+    this.name$ = docData(userDoc);
   }
 }
