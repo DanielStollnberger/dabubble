@@ -1,12 +1,14 @@
-import { Component, inject } from '@angular/core';
-import { collectionData, Firestore } from '@angular/fire/firestore';
+import { Component, computed, inject } from '@angular/core';
+import { collectionData, docData, Firestore } from '@angular/fire/firestore';
 import { collection, doc } from 'firebase/firestore';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { Observable } from 'rxjs';
+import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { DashboardStateService } from '../../../services/shared/dashboard-state.service';
+import { Channel } from '../../../services/models/channel.model';
+import { User } from '../../../services/models/user.model';
 
 @Component({
   selector: 'app-channels',
@@ -20,16 +22,34 @@ import { DashboardStateService } from '../../../services/shared/dashboard-state.
   styleUrl: './channels.scss',
 })
 export class Channels {
-  channel$!: Observable<any>;
   firestore = inject(Firestore);
   dashboardState = inject(DashboardStateService);
   userId = this.dashboardState.userId;
   channelCollect: any;
 
   constructor() {
-    this.channelCollect = collection(this.firestore, 'users/' + this.userId() + '/channels');
-    this.channel$ = collectionData(this.channelCollect, { idField: 'id' });
   }
+
+  channel$ = computed(() => {
+    const userDoc = doc(this.firestore, `users/${this.userId}`);
+  
+    return docData(userDoc).pipe(
+      // (
+            switchMap((user: any) => {
+              const channelIds = user.channels || [];
+              if (channelIds.length === 0) {
+                return of([]);
+              }
+              const channelRequests = channelIds.map((id: string) => {
+                const channelDoc = doc(this.firestore, `channels/${id}`);
+                return docData(channelDoc, { idField: 'id' });
+              });
+              return combineLatest(channelRequests);
+            })
+          ) as Observable<Channel[]>;
+    //   map((user: any) => user.channels || [])
+    // );
+  });
 
   toggleChannels() {
     console.log('toggled channels');

@@ -5,7 +5,12 @@
     justify-content: space-between;
     padding: 0 50px;
 
-    div {
+    .chat-header {
+        display: flex;
+        align-items: center;
+    }
+
+    .chat-header-users {
         display: flex;
         align-items: center;
     }
@@ -15,21 +20,24 @@
     }
 }
 
-.new-message{
+.new-message {
     height: 150px;
     padding-top: 20px;
     flex-direction: column;
     align-items: flex-start;
-    h1{
+
+    h1 {
         font-size: 24px;
     }
-    .placeholder-message{
+
+    .placeholder-message {
         width: 100%;
         display: flex;
         align-items: baseline;
         gap: 10px;
-        mat-form-field{
-            width:100%;
+
+        mat-form-field {
+            width: 100%;
         }
     }
 }
@@ -38,7 +46,7 @@ form {
     margin: 20px;
     position: absolute;
     bottom: 0;
-    width:calc(100% - 40px);
+    width: calc(100% - 40px);
 
     mat-form-field {
         border-radius: 20px;
@@ -53,6 +61,20 @@ form {
     background: #f4ded3;
 }
 
-.chat-section{
-    
+.chat-section {
+    position: absolute;
+    bottom: 150px;
+    overflow: hidden;
+}
+
+.channel-users {
+    display: flex;
+    justify-content: flex-end;
+
+    img {
+        margin-left: -30px;
+        height: 50px;
+        width: 50px;
+        object-fit: cover;
+    }
 }

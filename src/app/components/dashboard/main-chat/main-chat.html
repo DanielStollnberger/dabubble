@@ -1,6 +1,6 @@
 @if (channelId() || chatId()) {
 <mat-toolbar class="main-header">
-    <div>
+    <div class="chat-header">
         <mat-icon>select_all</mat-icon>
         <span>
             @if (chat$() | async; as chat) {
@@ -11,10 +11,24 @@
             <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
     </div>
-    <div>
-        <button matIconButton>
-            <mat-icon>add_box</mat-icon>
-        </button>
+    <div class="chat-header-users">
+        @if (dashboardState.chatType() === 'channel') {
+        <div class="channel-users">
+            @if (channelUser$() | async; as users) {
+                @for (user of users; track user.id) {
+                  <img [src]="user.img">
+                }
+              }
+        </div>
+
+        <div>
+            <button matIconButton>
+                <mat-icon>add_box</mat-icon>
+            </button>
+        </div>
+    } @else {
+
+    }
     </div>
 </mat-toolbar>
 <section class="chat-section">
