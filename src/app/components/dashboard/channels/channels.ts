@@ -16,40 +16,16 @@ import { User } from '../../../services/models/user.model';
     MatToolbarModule,
     MatIcon,
     MatIconButton,
-    AsyncPipe
+    // AsyncPipe
   ],
   templateUrl: './channels.html',
   styleUrl: './channels.scss',
 })
 export class Channels {
   firestore = inject(Firestore);
-  dashboardState = inject(DashboardStateService);
-  userId = this.dashboardState.userId;
-  channelCollect: any;
 
   constructor() {
   }
-
-  channel$ = computed(() => {
-    const userDoc = doc(this.firestore, `users/${this.userId}`);
-  
-    return docData(userDoc).pipe(
-      // (
-            switchMap((user: any) => {
-              const channelIds = user.channels || [];
-              if (channelIds.length === 0) {
-                return of([]);
-              }
-              const channelRequests = channelIds.map((id: string) => {
-                const channelDoc = doc(this.firestore, `channels/${id}`);
-                return docData(channelDoc, { idField: 'id' });
-              });
-              return combineLatest(channelRequests);
-            })
-          ) as Observable<Channel[]>;
-    //   map((user: any) => user.channels || [])
-    // );
-  });
 
   toggleChannels() {
     console.log('toggled channels');
@@ -60,7 +36,5 @@ export class Channels {
   }
 
   openChat(id: string) {
-    this.dashboardState.channelId.set(id);
-    this.dashboardState.chatType.set('channel');
   }
 }

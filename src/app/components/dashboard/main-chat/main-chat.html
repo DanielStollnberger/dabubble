@@ -1,24 +1,16 @@
-@if (channelId() || chatId()) {
 <mat-toolbar class="main-header">
     <div class="chat-header">
         <mat-icon>select_all</mat-icon>
         <span>
-            @if (chat$() | async; as chat) {
-            {{ chat['name'] }}
-            }
+          asjöaks
         </span>
         <button matIconButton>
             <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
     </div>
     <div class="chat-header-users">
-        @if (dashboardState.chatType() === 'channel') {
         <div class="channel-users">
-            @if (channelUser$() | async; as users) {
-                @for (user of users; track user.id) {
-                  <img [src]="user.img">
-                }
-              }
+            <img src="assets/img/profile.png">
         </div>
 
         <div>
@@ -26,20 +18,15 @@
                 <mat-icon>add_box</mat-icon>
             </button>
         </div>
-    } @else {
 
-    }
     </div>
 </mat-toolbar>
 <section class="chat-section">
-    @if (messages$() | async; as messages) {
-    @for (message of messages; track message.id) {
-    <p>{{ message['text'] }}</p>
-    }
-    }
+  
+    <p>öwedjwv</p>
+   
 </section>
-} @else {
-<mat-toolbar class="main-header new-message">
+<!-- <mat-toolbar class="main-header new-message">
     <h1>New Massage</h1>
     <div class="placeholder-message">
         <mat-form-field>
@@ -52,8 +39,7 @@
             </button>
         </div>
     </div>
-</mat-toolbar>
-}
+</mat-toolbar> -->
 <section class="content">
     <form class="example-form">
         <mat-form-field class="example-full-width">

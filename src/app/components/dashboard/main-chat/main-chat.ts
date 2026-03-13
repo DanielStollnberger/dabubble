@@ -21,7 +21,7 @@ import { User } from '../../../services/models/user.model';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    AsyncPipe
+    // AsyncPipe
   ],
   templateUrl: './main-chat.html',
   styleUrl: './main-chat.scss',
@@ -29,63 +29,4 @@ import { User } from '../../../services/models/user.model';
 
 export class MainChat {
   firestore = inject(Firestore);
-  dashboardState = inject(DashboardStateService);
-  chatId = this.dashboardState.chatId;
-  channelId = this.dashboardState.channelId;
-  userId = this.dashboardState.userId;
-  chatDoc: any;
-
-  chat$ = computed(() => {
-
-    if (this.dashboardState.chatType() === 'channel') {
-      const docRef = doc(this.firestore, 'channels/' + this.channelId());
-      return docData(docRef);
-    }
-
-    if (this.dashboardState.chatType() === 'direct') {
-      const docRef = doc(this.firestore, 'users/' + this.userId() + '/directs/' + this.chatId());
-      return docData(docRef);
-    }
-
-    return null;
-  });
-
-  channelUser$ = computed(() => {
-    const channelDoc = doc(this.firestore, `channels/${this.channelId()}`);
-  
-    return docData(channelDoc).pipe(
-      switchMap((channel: any) => {
-        const userIds = channel.channeluser || [];
-        if (userIds.length === 0) {
-          return of([]);
-        }
-        const userRequests = userIds.map((uid: string) => {
-          const userDoc = doc(this.firestore, `users/${uid}`);
-          return docData(userDoc, { idField: 'id' });
-        });
-        return combineLatest(userRequests);
-      })
-    ) as Observable<User[]>;
-  });
-
-  messages$ = computed(() => {
-
-    if (this.dashboardState.chatType() === 'channel') {
-      const messagesRef = collection(this.firestore, `channels/${this.channelId()}/messages`);
-      const q = query(messagesRef, orderBy('timestamp'));
-
-      return collectionData(q, { idField: 'id' });
-    }
-
-    if (this.dashboardState.chatType() === 'direct') {
-      const messagesRef = collection(this.firestore, 'users/' + this.userId() + '/directs/' + this.chatId() + '/messages');
-      const q = query(messagesRef, orderBy('timestamp'));
-
-      return collectionData(q, { idField: 'id' });
-    }
-
-    return null;
-  });
-
-
 }

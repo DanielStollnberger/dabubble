@@ -8,10 +8,5 @@
   </div>
 </section>
 <section>
-  @for (chat of (direct$ | async); track chat.id) {
-  <div class="directs" (click)="openChat(chat.id)">
-    <img src="assets/img/profile.png">
-    {{ chat.name }}
-  </div>
-  }
+  
 </section>

@@ -14,26 +14,19 @@ import { DashboardStateService } from '../../../services/shared/dashboard-state.
     MatToolbarModule,
     MatIcon,
     MatIconButton,
-    AsyncPipe
+    // AsyncPipe
   ],
   templateUrl: './direct-messages.html',
   styleUrl: './direct-messages.scss',
 })
 export class DirectMessages {
-  direct$!: Observable<any>;
   firestore = inject(Firestore);
-  dashboardState = inject(DashboardStateService);
-  userId = this.dashboardState.userId;
-  directsCollect: any;
 
   constructor() {
-    this.directsCollect = collection(this.firestore, 'users/'+ this.userId() +'/directs');
-    this.direct$ = collectionData(this.directsCollect, { idField: 'id' });
+   
   }
 
   openChat(id: string) {
-    this.dashboardState.chatId.set(id);
-    this.dashboardState.chatType.set('direct');
   }
 
   toggleDirects() {

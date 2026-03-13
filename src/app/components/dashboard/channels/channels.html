@@ -11,14 +11,7 @@
   </button>
 </div>
 <section>
-  @if (channel$() | async; as channels) {
-    @for (channel of channels; track channel.id) {
-      <div class="channels" (click)="openChat(channel.id)">
-        <mat-icon>select_all</mat-icon>
-        {{ channel.name }}
-      </div>
-    }
-  }
+
   <div class="channels" (click)="addChannel()">
     <mat-icon>add_circle</mat-icon>
     Add Channel

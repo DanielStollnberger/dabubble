@@ -18,14 +18,8 @@ import { DashboardStateService } from '../../../../services/shared/dashboard-sta
   styleUrl: './user-profile.scss',
 })
 export class UserProfile {
-  item$!: Observable<any>;
   firestore = inject(Firestore);
-  dashboardState = inject(DashboardStateService);
-  userId = this.dashboardState.userId;
-  userDoc:any;
 
   constructor() {
-    this.userDoc = doc(this.firestore, 'users/' + this.userId());
-    this.item$ = docData(this.userDoc);
   }
 }
