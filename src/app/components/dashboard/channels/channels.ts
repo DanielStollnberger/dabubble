@@ -9,6 +9,7 @@ import { AsyncPipe } from '@angular/common';
 import { DashboardStateService } from '../../../state/dashboard-state.service';
 import { Channel } from '../../../services/models/channel.model';
 import { User } from '../../../services/models/user.model';
+import { ChannelService } from '../../../services/channel.service';
 
 @Component({
   selector: 'app-channels',
@@ -16,15 +17,18 @@ import { User } from '../../../services/models/user.model';
     MatToolbarModule,
     MatIcon,
     MatIconButton,
-    // AsyncPipe
+    AsyncPipe
   ],
   templateUrl: './channels.html',
   styleUrl: './channels.scss',
 })
 export class Channels {
+  channels$: Observable<any>;
   firestore = inject(Firestore);
+  channelService = inject(ChannelService);
 
   constructor() {
+    this.channels$ = this.channelService.getUserChannels();
   }
 
   toggleChannels() {

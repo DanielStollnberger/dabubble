@@ -7,6 +7,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { collection } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 import { DashboardStateService } from '../../../state/dashboard-state.service';
+import { DirectService } from '../../../services/direct.service';
+import { subscribe } from 'diagnostics_channel';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-direct-messages',
@@ -14,16 +17,34 @@ import { DashboardStateService } from '../../../state/dashboard-state.service';
     MatToolbarModule,
     MatIcon,
     MatIconButton,
-    // AsyncPipe
+    AsyncPipe
   ],
   templateUrl: './direct-messages.html',
   styleUrl: './direct-messages.scss',
 })
 export class DirectMessages {
+  chats$: Observable<any>;
   firestore = inject(Firestore);
+  chatService = inject(DirectService);
+  userService = inject(UserService);
+  dashboardState = inject(DashboardStateService);
+  users:any;
 
   constructor() {
-   
+    this.chats$ = this.chatService.getUserChats();
+
+    // 🔥 alle users einmal laden
+    this.userService.getAllUsers().subscribe(users => {
+      this.users = users;
+    });
+  }
+
+  getOtherUser(direct: any) {
+    const myId = this.dashboardState.userId();
+  
+    const otherId = direct.members.find((id: string) => id !== myId);
+  
+    return this.users.find((user: any) => user.id === otherId);
   }
 
   openChat(id: string) {

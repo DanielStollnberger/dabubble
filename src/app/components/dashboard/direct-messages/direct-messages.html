@@ -8,8 +8,10 @@
   </div>
 </section>
 <section>
-  <div class="directs">
-    <img src="assets/img/profile.png">
-    martin
-  </div>
+    @for (chat of chats$ | async; track chat.id) {
+      <div class="directs" (click)="openChat(chat.id)">
+        <img [src]="getOtherUser(chat)['avatar']">
+        {{ getOtherUser(chat)?.name }}
+      </div>
+    }
 </section>
