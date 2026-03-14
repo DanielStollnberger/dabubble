@@ -28,6 +28,7 @@ export class DirectMessages {
   chatService = inject(DirectService);
   userService = inject(UserService);
   dashboardState = inject(DashboardStateService);
+  directService = inject(DirectService);
   users:any;
 
   constructor() {
@@ -39,18 +40,20 @@ export class DirectMessages {
     });
   }
 
+  openChat(id: string) {
+    this.dashboardState.channelId.set(id);
+    this.dashboardState.chatType.set('directs');
+  }
+
+  toggleDirects() {
+    console.log('toggled directs');
+  }
+
   getOtherUser(direct: any) {
     const myId = this.dashboardState.userId();
   
     const otherId = direct.members.find((id: string) => id !== myId);
   
     return this.users.find((user: any) => user.id === otherId);
-  }
-
-  openChat(id: string) {
-  }
-
-  toggleDirects() {
-    console.log('toggled directs');
   }
 }

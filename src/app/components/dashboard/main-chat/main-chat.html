@@ -1,8 +1,9 @@
+@if (dashboardState.chatType() === 'channel') {
 <mat-toolbar class="main-header">
     <div class="chat-header">
         <mat-icon>select_all</mat-icon>
         <span>
-          asjöaks
+            {{ (channelName$ | async)?.name }}
         </span>
         <button matIconButton>
             <mat-icon>keyboard_arrow_down</mat-icon>
@@ -22,11 +23,30 @@
     </div>
 </mat-toolbar>
 <section class="chat-section">
-  
+
     <p>öwedjwv</p>
-   
+
 </section>
-<!-- <mat-toolbar class="main-header new-message">
+} @else if(dashboardState.chatType() === 'directs') {
+    <mat-toolbar class="main-header">
+        <div class="chat-header">
+            <button matIconButton>
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+            <div class="chat-header-users">
+                <div class="chat-users">
+                    <img src="assets/img/profile.png">
+                </div>
+            </div>
+        </div>
+    </mat-toolbar>
+    <section class="chat-section">
+    
+        <p>öwedjwv</p>
+    
+    </section>
+} @else {
+<mat-toolbar class="main-header new-message">
     <h1>New Massage</h1>
     <div class="placeholder-message">
         <mat-form-field>
@@ -39,7 +59,9 @@
             </button>
         </div>
     </div>
-</mat-toolbar> -->
+</mat-toolbar>
+}
+
 <section class="content">
     <form class="example-form">
         <mat-form-field class="example-full-width">

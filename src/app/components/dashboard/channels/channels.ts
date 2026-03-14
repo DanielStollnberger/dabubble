@@ -26,6 +26,7 @@ export class Channels {
   channels$: Observable<any>;
   firestore = inject(Firestore);
   channelService = inject(ChannelService);
+  dashboardState = inject(DashboardStateService);
 
   constructor() {
     this.channels$ = this.channelService.getUserChannels();
@@ -40,5 +41,7 @@ export class Channels {
   }
 
   openChat(id: string) {
+    this.dashboardState.channelId.set(id);
+    this.dashboardState.chatType.set('channel');
   }
 }

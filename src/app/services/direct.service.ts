@@ -19,5 +19,4 @@ export class DirectService {
 
     return collectionData(q, { idField: 'id' });
   }
-
 }
