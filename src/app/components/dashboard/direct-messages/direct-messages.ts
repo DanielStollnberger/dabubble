@@ -41,7 +41,7 @@ export class DirectMessages {
   }
 
   openChat(id: string) {
-    this.dashboardState.channelId.set(id);
+    this.dashboardState.chatId.set(id);
     this.dashboardState.chatType.set('directs');
   }
 

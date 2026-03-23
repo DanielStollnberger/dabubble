@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, effect, inject, WritableSignal } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbar } from '@angular/material/toolbar';
@@ -12,9 +12,11 @@ import { collection, doc, orderBy, query } from 'firebase/firestore';
 import { AsyncPipe } from '@angular/common';
 import { User } from '../../../services/models/user.model';
 import { Channel } from '../../../services/models/channel.model';
-import { DirectMessages } from '../direct-messages/direct-messages';
 import { DirectService } from '../../../services/direct.service';
 import { UserService } from '../../../services/user.service';
+import { toObservable } from '@angular/core/rxjs-interop';
+
+
 
 @Component({
   selector: 'app-main-chat',
@@ -32,27 +34,54 @@ import { UserService } from '../../../services/user.service';
 })
 
 export class MainChat {
-  channelName$!: Observable<any>;
-  chatName$!: Observable<any>;
   firestore = inject(Firestore);
   dashboardState = inject(DashboardStateService);
-directService = inject(DirectService);
-userService = inject(UserService);
-  users:any;
+  directService = inject(DirectService);
+  userService = inject(UserService);
+  users: User[] = [];
 
-  constructor(){
-    if (this.dashboardState.chatType() === 'channel') {
-      effect(() => {
-        const channelId = this.dashboardState.channelId();
-        if (!channelId) return;
-        this.channelName$ = docData(doc(this.firestore, `channels/${channelId}`),{ idField: 'id' });
-      });
-    } else {
-      effect(() => {
-        const chatId = this.dashboardState.chatId();
-        if (!chatId) return;
-        this.chatName$ = docData(doc(this.firestore, `directs/${chatId}`),{ idField: 'id' });
-      });
-    }
+  channel$ = toObservable(this.dashboardState.channelId).pipe(
+    switchMap(channelId => {
+      if (!channelId) return of(null);
+
+      return docData(
+        doc(this.firestore, `channels/${channelId}`), { idField: 'id' });
+    })
+  );
+  chat$ = toObservable(this.dashboardState.chatId).pipe(
+    switchMap(chatId => {
+      if (!chatId) return of(null);
+
+      return docData(
+        doc(this.firestore, `directs/${chatId}`), { idField: 'id' });
+    })
+  );
+
+  ngOnInit() {
+    this.userService.getAllUsers().subscribe(users => {
+      this.users = users;
+    });
+  }
+
+  getUserById(userId: string): User | undefined {
+    return this.users.find(user => user.id === userId);
+  }
+
+  getOtherUser(direct: any) {
+    const myId = this.dashboardState.userId();
+  
+    const otherId = direct.members.find((id: string) => id !== myId);
+  
+    return this.users.find((user: any) => user.id === otherId);
+  }
+
+  constructor() {
+    // if (this.dashboardState.chatType() === 'chat') {
+    //   effect(() => {
+    //     const chatId = this.dashboardState.chatId();
+    //     if (!chatId) return;
+    //     this.chat$ = docData(doc(this.firestore, `directs/${chatId}`), { idField: 'id' });
+    //   });
+    // }
   }
 }
