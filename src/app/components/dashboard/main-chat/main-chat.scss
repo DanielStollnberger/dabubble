@@ -62,9 +62,94 @@ form {
 }
 
 .chat-section {
+    gap: 10px;
+    padding: 10px;
+    width: calc(100% - 20px);
     position: absolute;
-    bottom: 150px;
+    bottom: 160px;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    .message {
+        max-width: calc(100% - 20px);
+        border: 1px solid rgb(0, 0, 0, 0.1);
+        border-radius: 5px;
+        display: flex;
+        flex-direction: row;
+        width: auto;
+        align-self: start;
+
+        &:hover {
+            background: #a52a2a0a;
+            cursor: pointer;
+        }
+
+        img {
+            height: 50px;
+        }
+
+        .message-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            h4 {
+                color: blueviolet;
+                margin: 0;
+            }
+        }
+
+        .message-date {
+            display: flex;
+            justify-content: end;
+            font-size: 13px;
+            color: rgb(0, 0, 0, 0.3);
+            flex: 1;
+            padding: 3px 3px;
+        }
+    }
+
+    .message-self {
+        max-width: calc(100% - 20px);
+        background: #a52a2a32;
+        border: 1px solid rgb(0, 0, 0, 0.1);
+        border-radius: 5px;
+        display: flex;
+        flex-direction: row;
+        width: auto;
+        align-self: end;
+
+        img {
+            height: 50px;
+        }
+
+        &:hover {
+            background: #a52a2a3e;
+            cursor: pointer;
+        }
+
+        .message-info {
+            flex: 1;
+            align-items: end;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            h4 {
+                color: blueviolet;
+                margin: 0;
+            }
+        }
+
+        .message-date {
+            display: flex;
+            justify-content: end;
+            font-size: 13px;
+            color: rgb(0, 0, 0, 0.3);
+            padding: 3px 3px;
+        }
+    }
 }
 
 .channel-users {

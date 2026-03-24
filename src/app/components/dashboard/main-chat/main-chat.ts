@@ -9,7 +9,7 @@ import { DashboardStateService } from '../../../state/dashboard-state.service';
 import { combineLatest, Observable, of, switchMap } from 'rxjs';
 import { collectionData, docData, Firestore } from '@angular/fire/firestore';
 import { collection, doc, orderBy, query } from 'firebase/firestore';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DatePipe, NgClass } from '@angular/common';
 import { User } from '../../../services/models/user.model';
 import { Channel } from '../../../services/models/channel.model';
 import { DirectService } from '../../../services/direct.service';
@@ -27,13 +27,15 @@ import { toObservable } from '@angular/core/rxjs-interop';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    AsyncPipe
-  ],
+    AsyncPipe,
+    DatePipe
+],
   templateUrl: './main-chat.html',
   styleUrl: './main-chat.scss',
 })
 
 export class MainChat {
+  messages$!: Observable<any[]>;
   firestore = inject(Firestore);
   dashboardState = inject(DashboardStateService);
   directService = inject(DirectService);
@@ -44,6 +46,11 @@ export class MainChat {
     switchMap(channelId => {
       if (!channelId) return of(null);
 
+      this.messages$ = collectionData(
+        collection(this.firestore, `channels/${channelId}/messages`),
+        { idField: 'id' }
+      );
+
       return docData(
         doc(this.firestore, `channels/${channelId}`), { idField: 'id' });
     })
@@ -51,6 +58,11 @@ export class MainChat {
   chat$ = toObservable(this.dashboardState.chatId).pipe(
     switchMap(chatId => {
       if (!chatId) return of(null);
+
+      this.messages$ = collectionData(
+        collection(this.firestore, `directs/${chatId}/messages`),
+        { idField: 'id' }
+      );
 
       return docData(
         doc(this.firestore, `directs/${chatId}`), { idField: 'id' });
@@ -75,13 +87,14 @@ export class MainChat {
     return this.users.find((user: any) => user.id === otherId);
   }
 
+  getOtherUsers(channel: any) {
+    const myId = this.dashboardState.userId();
+  
+    return channel.members
+      .filter((id: string) => id !== myId)
+      .map((id: string) => this.users.find(user => user.id === id));
+  }
+
   constructor() {
-    // if (this.dashboardState.chatType() === 'chat') {
-    //   effect(() => {
-    //     const chatId = this.dashboardState.chatId();
-    //     if (!chatId) return;
-    //     this.chat$ = docData(doc(this.firestore, `directs/${chatId}`), { idField: 'id' });
-    //   });
-    // }
   }
 }

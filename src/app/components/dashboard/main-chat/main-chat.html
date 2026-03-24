@@ -23,13 +23,40 @@
     </div>
 </mat-toolbar>
 
+<section class="chat-section">
+    @if (messages$ | async; as messages) {
+    @for (message of messages; track message.id) {
+    @let user = getUserById(message.senderId);
+    @if (message.senderId == dashboardState.userId()) {
+    <div class="message-self">
+        <div class="message-date">
+            <span>{{ message.createdAt | date:'dd.MM.yyyy' }} | </span>
+            <span>{{ message.createdAt | date:'HH:mm' }}</span>
+        </div>
+        <div class="message-info">
+            <h4>{{ user?.name }}</h4>
+            <span>{{ message.text }}</span>
+        </div>
+        <img [src]="user?.avatar">
+    </div>
+    } @else {
+    <div class="message">
+        <img [src]="user?.avatar">
+        <div class="message-info">
+            <h4>{{ user?.name }}</h4>
+            <span>{{ message.text }}</span>
+        </div>
+        <div class="message-date">
+            <span>{{ message.createdAt | date:'dd.MM.yyyy' }} | </span>
+            <span>{{ message.createdAt | date:'HH:mm' }}</span>
+        </div>
+    </div>
+    }
+    }
+    }
+</section>
 }
 
-<section class="chat-section">
-
-    <p>öwedjwv</p>
-
-</section>
 } @else if(dashboardState.chatType() === 'directs') {
 @if (chat$ | async; as chat) {
 <mat-toolbar class="main-header">
@@ -42,15 +69,42 @@
         </span>
         <div class="chat-header-users">
             <div class="chat-users">
-                <img src="assets/img/profile.png">
+                <img [src]="getOtherUser(chat)?.avatar">
             </div>
         </div>
     </div>
 </mat-toolbar>
 <section class="chat-section">
-
-    <p>öwedjwv</p>
-
+    @if (messages$ | async; as messages) {
+    @for (message of messages; track message.id) {
+    @let user = getUserById(message.senderId);
+    @if (message.senderId == dashboardState.userId()) {
+        <div class="message-self">
+            <div class="message-date">
+                <span>{{ message.createdAt | date:'dd.MM.yyyy' }} | </span>
+                <span>{{ message.createdAt | date:'HH:mm' }}</span>
+            </div>
+            <div class="message-info">
+                <h4>{{ user?.name }}</h4>
+                <span>{{ message.text }}</span>
+            </div>
+            <img [src]="user?.avatar">
+        </div>
+        } @else {
+        <div class="message">
+            <img [src]="user?.avatar">
+            <div class="message-info">
+                <h4>{{ user?.name }}</h4>
+                <span>{{ message.text }}</span>
+            </div>
+            <div class="message-date">
+                <span>{{ message.createdAt | date:'dd.MM.yyyy' }} | </span>
+                <span>{{ message.createdAt | date:'HH:mm' }}</span>
+            </div>
+        </div>
+        }
+    }
+    }
 </section>
 }
 } @else {
