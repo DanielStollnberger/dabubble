@@ -1,0 +1,28 @@
+<h3 mat-dialog-title>Create new Channel</h3>
+
+<mat-dialog-content>
+    <mat-form-field appearance="outline" style="margin-top: 20px;">
+        <mat-label>Channel Name</mat-label>
+        <input matInput placeholder="Channel name..." [(ngModel)]="channelName" name="channelName">
+    </mat-form-field>
+            <mat-form-field>
+                <mat-label>Channel Members</mat-label>
+                <mat-select [formControl]="selectedUsers" multiple>
+                    @if (users | async; as usersList) {
+                    @for (user of usersList; track user.id) {
+                    <mat-option [value]="user">{{user.name}}</mat-option>
+                    }
+                    }
+                </mat-select>
+            </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close>
+        Cancel
+    </button>
+
+    <button mat-flat-button color="primary" (click)="createChannel()" mat-dialog-close>
+        Create
+    </button>
+</mat-dialog-actions>

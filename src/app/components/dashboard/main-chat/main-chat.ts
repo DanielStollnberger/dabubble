@@ -8,13 +8,14 @@ import { FormsModule } from '@angular/forms';
 import { DashboardStateService } from '../../../state/dashboard-state.service';
 import { combineLatest, Observable, of, switchMap } from 'rxjs';
 import { collectionData, docData, Firestore } from '@angular/fire/firestore';
-import { collection, doc, orderBy, query } from 'firebase/firestore';
+import { addDoc, collection, doc, orderBy, query } from 'firebase/firestore';
 import { AsyncPipe, DatePipe, NgClass } from '@angular/common';
 import { User } from '../../../services/models/user.model';
 import { Channel } from '../../../services/models/channel.model';
 import { DirectService } from '../../../services/direct.service';
 import { UserService } from '../../../services/user.service';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { threadId } from 'node:worker_threads';
 
 
 
@@ -41,6 +42,7 @@ export class MainChat {
   directService = inject(DirectService);
   userService = inject(UserService);
   users: User[] = [];
+  messageInput:string = '';
 
   channel$ = toObservable(this.dashboardState.channelId).pipe(
     switchMap(channelId => {
@@ -94,6 +96,33 @@ export class MainChat {
       .filter((id: string) => id !== myId)
       .map((id: string) => this.users.find(user => user.id === id));
   }
+
+  async sendMessage(chatId: string) {
+    const messagesRef = collection(this.firestore, 'directs', chatId, 'messages');
+  
+    await addDoc(messagesRef, {
+      text: this.messageInput,
+      senderId: this.dashboardState.userId(),
+      createdAt: new Date().toISOString(),
+      threadId: ''
+    });
+
+    this.messageInput ='';
+  }
+
+  async sendChannelMessage(channelId: string) {
+    const messagesRef = collection(this.firestore, 'channels', channelId, 'messages');
+  
+    await addDoc(messagesRef, {
+      text: this.messageInput,
+      senderId: this.dashboardState.userId(),
+      createdAt: new Date().toISOString(),
+      threadId: ''
+    });
+
+    this.messageInput ='';
+  }
+
 
   constructor() {
   }

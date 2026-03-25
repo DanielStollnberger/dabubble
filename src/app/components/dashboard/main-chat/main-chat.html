@@ -1,6 +1,5 @@
 @if (dashboardState.chatType() === 'channel') {
 @if (channel$ | async; as channel) {
-
 <mat-toolbar class="main-header">
     <div class="chat-header">
         <mat-icon>select_all</mat-icon>
@@ -22,11 +21,53 @@
         </div>
     </div>
 </mat-toolbar>
+}
+} @else if (dashboardState.chatType() === 'directs') {
+@if (chat$ | async; as chat) {
+<mat-toolbar class="main-header">
+    <div class="chat-header">
+        <button matIconButton>
+            <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+        <span>
+            {{ getOtherUser(chat)?.name }}
+        </span>
+        <div class="chat-header-users">
+            <div class="chat-users">
+                <img [src]="getOtherUser(chat)?.avatar">
+            </div>
+        </div>
+    </div>
+</mat-toolbar>
+}
+} @else {
+<mat-toolbar class="main-header new-message">
+    <h1>New Massage</h1>
+    <div class="placeholder-message">
+        <mat-form-field>
+            <mat-label>...to Channel, Direct or new @email</mat-label>
+            <input matInput placeholder="...">
+        </mat-form-field>
+        <div>
+            <button matIconButton>
+                <mat-icon>send</mat-icon>
+            </button>
+        </div>
+    </div>
+</mat-toolbar>
+}
+
+
+@if (
+(dashboardState.chatType() === 'channel' && (channel$ | async)) ||
+(dashboardState.chatType() === 'directs' && (chat$ | async))
+) {
 
 <section class="chat-section">
     @if (messages$ | async; as messages) {
     @for (message of messages; track message.id) {
     @let user = getUserById(message.senderId);
+
     @if (message.senderId == dashboardState.userId()) {
     <div class="message-self">
         <div class="message-date">
@@ -55,80 +96,15 @@
     }
     }
 </section>
+
 }
 
-} @else if(dashboardState.chatType() === 'directs') {
-@if (chat$ | async; as chat) {
-<mat-toolbar class="main-header">
-    <div class="chat-header">
-        <button matIconButton>
-            <mat-icon>keyboard_arrow_down</mat-icon>
-        </button>
-        <span>
-            {{ getOtherUser(chat)?.name }}
-        </span>
-        <div class="chat-header-users">
-            <div class="chat-users">
-                <img [src]="getOtherUser(chat)?.avatar">
-            </div>
-        </div>
-    </div>
-</mat-toolbar>
-<section class="chat-section">
-    @if (messages$ | async; as messages) {
-    @for (message of messages; track message.id) {
-    @let user = getUserById(message.senderId);
-    @if (message.senderId == dashboardState.userId()) {
-        <div class="message-self">
-            <div class="message-date">
-                <span>{{ message.createdAt | date:'dd.MM.yyyy' }} | </span>
-                <span>{{ message.createdAt | date:'HH:mm' }}</span>
-            </div>
-            <div class="message-info">
-                <h4>{{ user?.name }}</h4>
-                <span>{{ message.text }}</span>
-            </div>
-            <img [src]="user?.avatar">
-        </div>
-        } @else {
-        <div class="message">
-            <img [src]="user?.avatar">
-            <div class="message-info">
-                <h4>{{ user?.name }}</h4>
-                <span>{{ message.text }}</span>
-            </div>
-            <div class="message-date">
-                <span>{{ message.createdAt | date:'dd.MM.yyyy' }} | </span>
-                <span>{{ message.createdAt | date:'HH:mm' }}</span>
-            </div>
-        </div>
-        }
-    }
-    }
-</section>
-}
-} @else {
-<mat-toolbar class="main-header new-message">
-    <h1>New Massage</h1>
-    <div class="placeholder-message">
-        <mat-form-field>
-            <mat-label>...to Channel, Direct or new @email</mat-label>
-            <input matInput placeholder="...">
-        </mat-form-field>
-        <div>
-            <button matIconButton>
-                <mat-icon>send</mat-icon>
-            </button>
-        </div>
-    </div>
-</mat-toolbar>
-}
 
 <section class="content">
     <form class="example-form">
         <mat-form-field class="example-full-width">
             <mat-label>Send message to #construction</mat-label>
-            <textarea matInput placeholder="..."></textarea>
+            <textarea matInput placeholder="..."  [(ngModel)]="messageInput" name="message"></textarea>
         </mat-form-field>
         <mat-toolbar class="message-toolbar">
             <button matIconButton>
@@ -142,9 +118,15 @@
                 <mat-icon>alternate_email</mat-icon>
             </button>
             <div class="space-between"></div>
-            <button matIconButton>
+            @if (dashboardState.chatId()) {
+            <button matIconButton (click)="sendMessage(dashboardState.chatId()!)">
                 <mat-icon>send</mat-icon>
             </button>
+            } @else if(dashboardState.channelId()) {
+                <button matIconButton (click)="sendChannelMessage(dashboardState.channelId()!)">
+                    <mat-icon>send</mat-icon>
+                </button>
+            }
         </mat-toolbar>
     </form>
 </section>

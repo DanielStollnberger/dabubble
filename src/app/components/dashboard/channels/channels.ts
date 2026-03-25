@@ -10,6 +10,16 @@ import { DashboardStateService } from '../../../state/dashboard-state.service';
 import { Channel } from '../../../services/models/channel.model';
 import { User } from '../../../services/models/user.model';
 import { ChannelService } from '../../../services/channel.service';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
+import { AddChannelDialog } from './add-channel-dialog/add-channel-dialog';
 
 @Component({
   selector: 'app-channels',
@@ -27,20 +37,23 @@ export class Channels {
   firestore = inject(Firestore);
   channelService = inject(ChannelService);
   dashboardState = inject(DashboardStateService);
+  channelsOpen = true;
+  readonly dialog = inject(MatDialog);
 
   constructor() {
     this.channels$ = this.channelService.getUserChannels();
   }
 
   toggleChannels() {
-    console.log('toggled channels');
+   this.channelsOpen = !this.channelsOpen
   }
 
-  addChannel() {
-    console.log('added channel');
+  addChannelDialogOpen(): void {
+    const dialogRef = this.dialog.open(AddChannelDialog);
   }
 
   openChat(id: string) {
+    this.dashboardState.chatId.set(null); 
     this.dashboardState.channelId.set(id);
     this.dashboardState.chatType.set('channel');
   }

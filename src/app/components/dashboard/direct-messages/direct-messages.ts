@@ -30,6 +30,7 @@ export class DirectMessages {
   dashboardState = inject(DashboardStateService);
   directService = inject(DirectService);
   users:any;
+  directsOpen = true;
 
   constructor() {
     this.chats$ = this.chatService.getUserChats();
@@ -41,12 +42,13 @@ export class DirectMessages {
   }
 
   openChat(id: string) {
+    this.dashboardState.channelId.set(null); 
     this.dashboardState.chatId.set(id);
     this.dashboardState.chatType.set('directs');
   }
 
   toggleDirects() {
-    console.log('toggled directs');
+    this.directsOpen = !this.directsOpen;
   }
 
   getOtherUser(direct: any) {
