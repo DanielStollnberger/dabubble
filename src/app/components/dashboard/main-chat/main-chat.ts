@@ -30,7 +30,7 @@ import { threadId } from 'node:worker_threads';
     MatInputModule,
     AsyncPipe,
     DatePipe
-],
+  ],
   templateUrl: './main-chat.html',
   styleUrl: './main-chat.scss',
 })
@@ -42,7 +42,7 @@ export class MainChat {
   directService = inject(DirectService);
   userService = inject(UserService);
   users: User[] = [];
-  messageInput:string = '';
+  messageInput: string = '';
 
   channel$ = toObservable(this.dashboardState.channelId).pipe(
     switchMap(channelId => {
@@ -83,23 +83,23 @@ export class MainChat {
 
   getOtherUser(direct: any) {
     const myId = this.dashboardState.userId();
-  
+
     const otherId = direct.members.find((id: string) => id !== myId);
-  
+
     return this.users.find((user: any) => user.id === otherId);
   }
 
-  getOtherUsers(channel: any) {
-    const myId = this.dashboardState.userId();
-  
-    return channel.members
-      .filter((id: string) => id !== myId)
-      .map((id: string) => this.users.find(user => user.id === id));
-  }
+  // getOtherUsers(channel: any) {
+  //   const myId = this.dashboardState.userId();
+
+  //   return channel.members
+  //     .filter((id: string) => id !== myId)
+  //     .map((id: string) => this.users.find(user => user.id === id));
+  // }
 
   async sendMessage(chatId: string) {
     const messagesRef = collection(this.firestore, 'directs', chatId, 'messages');
-  
+
     await addDoc(messagesRef, {
       text: this.messageInput,
       senderId: this.dashboardState.userId(),
@@ -107,12 +107,12 @@ export class MainChat {
       threadId: ''
     });
 
-    this.messageInput ='';
+    this.messageInput = '';
   }
 
   async sendChannelMessage(channelId: string) {
     const messagesRef = collection(this.firestore, 'channels', channelId, 'messages');
-  
+
     await addDoc(messagesRef, {
       text: this.messageInput,
       senderId: this.dashboardState.userId(),
@@ -120,9 +120,19 @@ export class MainChat {
       threadId: ''
     });
 
-    this.messageInput ='';
+    this.messageInput = '';
   }
 
+  closeChat() {
+    this.dashboardState.chatType.set(null);
+    this.dashboardState.chatId.set(null);
+    this.dashboardState.channelId.set(null);
+  }
+
+  openThread(threadId: any) {
+    this.dashboardState.threadId.set(threadId);
+    this.dashboardState.openChatAnswers.set(true);
+  }
 
   constructor() {
   }

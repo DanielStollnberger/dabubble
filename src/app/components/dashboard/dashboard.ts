@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -31,10 +31,10 @@ import { DashboardStateService } from '../../state/dashboard-state.service';
 })
 export class Dashboard {
   sidenavIsOpen: boolean = true;
-  openChatAnswers: boolean = true;
   userId: any;
+  dashboardState = inject(DashboardStateService);
 
-  constructor(private route: ActivatedRoute, private dashboardState: DashboardStateService) {
+  constructor(private route: ActivatedRoute) {
 
   }
 
@@ -49,6 +49,6 @@ export class Dashboard {
   }
 
   closeChatAnswers() {
-    this.openChatAnswers = false;
+    this.dashboardState.openChatAnswers.set(false);
   }
 }

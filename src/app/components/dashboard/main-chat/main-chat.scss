@@ -61,16 +61,23 @@ form {
     background: #f4ded3;
 }
 
+.chat-section::before {
+    content: '';
+    margin-top: auto;
+}
+
 .chat-section {
-    gap: 10px;
-    padding: 10px;
     width: calc(100% - 20px);
     position: absolute;
-    bottom: 160px;
-    overflow: hidden;
+    top: 100px;        
+    bottom: 160px;     
+    left: 0;
+    right: 0;
+    overflow-y: auto;   
     display: flex;
     flex-direction: column;
-
+    gap: 10px;
+    padding: 10px;
     .message {
         max-width: calc(100% - 20px);
         border: 1px solid rgb(0, 0, 0, 0.1);
@@ -98,6 +105,10 @@ form {
                 color: blueviolet;
                 margin: 0;
             }
+
+            span {
+                word-break: break-all;
+            }
         }
 
         .message-date {
@@ -107,6 +118,16 @@ form {
             color: rgb(0, 0, 0, 0.3);
             flex: 1;
             padding: 3px 3px;
+            flex-direction: column;
+            .thread-info{
+                color: black;
+                margin-left: 3px;
+                font-size: 15px;
+                display: flex;
+                justify-content: end;
+                flex: 1;
+                align-items: end;
+            }
         }
     }
 
@@ -140,6 +161,10 @@ form {
                 color: blueviolet;
                 margin: 0;
             }
+
+            span {
+                word-break: break-all;
+            }
         }
 
         .message-date {
@@ -148,6 +173,16 @@ form {
             font-size: 13px;
             color: rgb(0, 0, 0, 0.3);
             padding: 3px 3px;
+            flex-direction: column;
+            .thread-info{
+                color: black;
+                margin-left: 3px;
+                font-size: 15px;
+                display: flex;
+                justify-content: start;
+                flex: 1;
+                align-items: end;
+            }
         }
     }
 }

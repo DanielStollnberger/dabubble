@@ -1,1 +1,68 @@
+@if (threadMessages$ | async; as messages)
+{
 
+<section class="chat-section">
+    @for (message of messages; track message.id) {
+    @let user = getUserById(message['senderId']);
+    
+    @if (message['senderId']== dashboardState.userId()) {
+    <div class="message-self">
+        <div class="message-date">
+            <div>
+                <span>{{ message['createdAt'] | date:'dd.MM.yyyy' }} | </span>
+                <span>{{ message['createdAt'] | date:'HH:mm' }}</span>
+            </div>
+        </div>
+        <div class="message-info">
+            <h4>{{ user?.name }}</h4>
+            <span>{{ message['text'] }}</span>
+        </div>
+        <img [src]="user?.avatar">
+    </div>
+    } @else {
+    <div class="message">
+        <img [src]="user?.avatar">
+        <div class="message-info">
+            <h4>{{ user?.name }}</h4>
+            <span>{{ message['text'] }}</span>
+        </div>
+        <div class="message-date">
+            <div>
+                <span>{{ message['createdAt'] | date:'dd.MM.yyyy' }} | </span>
+                <span>{{ message['createdAt'] | date:'HH:mm' }}</span>
+            </div>
+        </div>
+    </div>
+    }
+    }
+</section>
+
+}
+
+
+<section class="content">
+    <form class="example-form">
+        <mat-form-field class="example-full-width">
+            <mat-label>Send message to #construction</mat-label>
+            <textarea matInput placeholder="..." [(ngModel)]="threadInput" name="message"></textarea>
+        </mat-form-field>
+        <mat-toolbar class="message-toolbar">
+            <button matIconButton>
+                <mat-icon>add</mat-icon>
+            </button>
+            <span>|</span>
+            <button matIconButton>
+                <mat-icon>add_reaction</mat-icon>
+            </button>
+            <button matIconButton>
+                <mat-icon>alternate_email</mat-icon>
+            </button>
+            <div class="space-between"></div>
+            @if (dashboardState.threadId()) {
+            <button matIconButton (click)="sendThread(dashboardState.threadId()!)">
+                <mat-icon>send</mat-icon>
+            </button>
+            }
+        </mat-toolbar>
+    </form>
+</section>
