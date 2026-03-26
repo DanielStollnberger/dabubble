@@ -16,6 +16,8 @@ import { DirectService } from '../../../services/direct.service';
 import { UserService } from '../../../services/user.service';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { threadId } from 'node:worker_threads';
+import { AddChannelDialog } from '../channels/add-channel-dialog/add-channel-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 
 
@@ -43,6 +45,7 @@ export class MainChat {
   userService = inject(UserService);
   users: User[] = [];
   messageInput: string = '';
+  readonly dialog = inject(MatDialog);
 
   channel$ = toObservable(this.dashboardState.channelId).pipe(
     switchMap(channelId => {
@@ -132,6 +135,11 @@ export class MainChat {
   openThread(threadId: any) {
     this.dashboardState.threadId.set(threadId);
     this.dashboardState.openChatAnswers.set(true);
+  }
+
+  addUserToChannel(){
+    const dialogRef = this.dialog.open(AddChannelDialog);
+    this.dashboardState.editChannel.set(true);
   }
 
   constructor() {

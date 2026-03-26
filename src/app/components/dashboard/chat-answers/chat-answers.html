@@ -1,10 +1,37 @@
 @if (threadMessages$ | async; as messages)
 {
+@if (threadParent$ | async; as parent) {
+    <mat-toolbar class="main-header" color="primary">
+        <div class="header-left">
+          <button mat-icon-button (click)="closeThread()">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+      
+          <div class="thread-message">
+            <div class="thread-top">
+              <span class="thread-label">Message</span>
+              <span class="thread-author">
+                von <strong>{{ getUserById(parent['senderId'])?.name }}</strong>
+              </span>
+            </div>
+      
+            <p class="thread-text">
+             {{ parent['text'] }}
+            </p>
+      
+            <span class="thread-date">
+            vom  {{ parent['createdAt'] | date:'dd.MM.yyyy HH:mm' }}
+            </span>
+          </div>
+        </div>
+   
+      </mat-toolbar>
+}
 
 <section class="chat-section">
     @for (message of messages; track message.id) {
     @let user = getUserById(message['senderId']);
-    
+
     @if (message['senderId']== dashboardState.userId()) {
     <div class="message-self">
         <div class="message-date">

@@ -44,6 +44,27 @@ export class ChatAnswers {
     });
   }
 
+  threadParent$ = toObservable(this.dashboardState.threadId).pipe(
+    switchMap(threadId => {
+      if (!threadId) return of(null);
+  
+      // get thread meta first
+      return docData(doc(this.firestore, `threads/${threadId}`)).pipe(
+        switchMap((thread: any) => {
+          if (!thread?.parentMessageId || !thread?.channelId) return of(null);
+  
+          return docData(
+            doc(
+              this.firestore,
+              `channels/${thread.channelId}/messages/${thread.parentMessageId}`
+            ),
+            { idField: 'id' }
+          );
+        })
+      );
+    })
+  );
+
   threadMessages$ = toObservable(this.dashboardState.threadId).pipe(
     switchMap(threadId => {
       if (!threadId) return of([]);
@@ -71,6 +92,10 @@ export class ChatAnswers {
       });
   
       this.threadInput = '';
+    }
+
+    closeThread(){
+      this.dashboardState.openChatAnswers.set(false);
     }
 
   constructor() {
