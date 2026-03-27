@@ -133,11 +133,13 @@ export class MainChat {
   }
 
   openThread(threadId: any) {
-    this.dashboardState.threadId.set(threadId);
-    this.dashboardState.openChatAnswers.set(true);
+    if (this.dashboardState.chatType() === 'Channel') {
+      this.dashboardState.threadId.set(threadId);
+      this.dashboardState.openChatAnswers.set(true);
+    }
   }
 
-  addUserToChannel(){
+  addUserToChannel() {
     const dialogRef = this.dialog.open(AddChannelDialog);
     this.dashboardState.editChannel.set(true);
   }
