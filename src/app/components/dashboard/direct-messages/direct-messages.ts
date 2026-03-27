@@ -45,6 +45,7 @@ export class DirectMessages {
     this.dashboardState.channelId.set(null); 
     this.dashboardState.chatId.set(id);
     this.dashboardState.chatType.set('directs');
+    this.dashboardState.openChatAnswers.set(false);
   }
 
   toggleDirects() {
