@@ -37,7 +37,7 @@ export class StartScreen {
   
       // 🔥 FIX
       this.zone.run(() => {
-        this.router.navigate([`/dashboard/${uid}`]);
+        this.router.navigate([`/dashboard`]);
       });
   
     } catch (error) {

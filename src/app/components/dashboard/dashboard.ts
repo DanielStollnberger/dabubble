@@ -11,6 +11,7 @@ import { Header } from './header/header';
 import { ChatAnswers } from './chat-answers/chat-answers';
 import { ActivatedRoute } from '@angular/router';
 import { DashboardStateService } from '../../state/dashboard-state.service';
+import { getAuth } from 'firebase/auth';
 
 @Component({
   selector: 'app-dashboard',
@@ -39,9 +40,12 @@ export class Dashboard {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.dashboardState.userId.set(params['userId']);
-    });
+    const auth = getAuth();
+    const user = auth.currentUser;
+  
+    if (user) {
+      this.dashboardState.userId.set(user.uid);
+    }
   }
 
   toggleSidenav() {

@@ -8,7 +8,7 @@ export const routes: Routes = [
         component: StartScreen
     },
     {
-        path: 'dashboard/:userId',
+        path: 'dashboard',
         component: Dashboard
     }
 ];
