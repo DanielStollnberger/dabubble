@@ -3,7 +3,7 @@
         {{ (name$ | async)?.name }}
     </p>
     <img [src]="(name$ | async)?.avatar" style="margin-left: 10px;">
-    <button matIconButton class="example-icon">
-        <mat-icon style="color: white;">share</mat-icon>
+    <button matIconButton class="example-icon" (click)="openEditUserDialog()">
+        <mat-icon style="color: white;">menu</mat-icon>
     </button>
 </div>

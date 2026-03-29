@@ -1,0 +1,30 @@
+<h3 mat-dialog-title>Edit User</h3>
+
+<mat-dialog-content>
+
+  <mat-form-field appearance="outline" style="margin-top: 20px;">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="user.name" name="name" placeholder="Your name...">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Avatar URL</mat-label>
+    <input matInput [(ngModel)]="user.avatar" name="avatar" placeholder="Image URL...">
+  </mat-form-field>
+
+  <!-- Optional Preview -->
+  <div style="margin-top: 10px;">
+    <img [src]="user.avatar" style="height: 130px; border-radius: 50%;">
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>
+    Cancel
+  </button>
+
+  <button mat-flat-button color="primary" (click)="saveUser()" mat-dialog-close>
+    Save
+  </button>
+</mat-dialog-actions>

@@ -25,7 +25,7 @@ ngOnInit() {
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        this.router.navigate([`/dashboard/${user.uid}`]);
+        this.router.navigate([`/dashboard`]);
       }
       if (!user) {
         this.router.navigate(['/']);

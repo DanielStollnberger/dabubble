@@ -23,10 +23,6 @@ export class StartScreen {
   dashboardState = inject(DashboardStateService);
   router = inject(Router);
   zone = inject(NgZone);
-  goToDashboard(userId: string) {
-    this.dashboardState.userId.set(userId);
-    this.router.navigate([`/dashboard/${userId}`]);
-  }
 
   async login(email: string, password: string) {
     try {

@@ -35,7 +35,7 @@ export class Dashboard {
   userId: any;
   dashboardState = inject(DashboardStateService);
 
-  constructor(private route: ActivatedRoute) {
+  constructor() {
 
   }
 
