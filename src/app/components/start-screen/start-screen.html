@@ -10,21 +10,21 @@
       <mat-card-content>
   
         <form class="auth-form">
-  
+
           <mat-form-field appearance="outline">
             <mat-label>Email</mat-label>
-            <input matInput type="email" placeholder="Enter your email">
+            <input matInput #email type="email" required>
           </mat-form-field>
-  
+        
           <mat-form-field appearance="outline">
             <mat-label>Password</mat-label>
-            <input matInput type="password" placeholder="Enter your password">
+            <input matInput #password type="password" required>
           </mat-form-field>
-
-          <button mat-flat-button (click)="goToDashboard('4eIlB9xP9bOUQtok3NhV')" color="primary" class="login-btn">
+        
+          <button type="button" mat-flat-button color="primary" class="login-btn" (click)="login(email.value, password.value)">
             Login
           </button>
-  
+        
         </form>
   
       </mat-card-content>

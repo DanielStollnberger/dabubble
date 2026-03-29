@@ -79,8 +79,10 @@
                 <span>{{ message.createdAt | date:'HH:mm' }}</span>
             </div>
             <div class="thread-info">
+                @if (dashboardState.chatType() === 'channel') {
                 @if (message.threadId.length > 0) {
                 1+@
+                }
                 }
             </div>
         </div>
@@ -103,8 +105,10 @@
                 <span>{{ message.createdAt | date:'HH:mm' }}</span>
             </div>
             <div class="thread-info">
+                @if (dashboardState.chatType() === 'channel') {
                 @if (dashboardState.chatType() === 'channel' && message.threadId.length > 0) {
                 1+@
+                }
                 }
             </div>
         </div>
