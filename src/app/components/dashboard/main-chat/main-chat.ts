@@ -133,7 +133,7 @@ export class MainChat {
   }
 
   openThread(threadId: any) {
-    if (this.dashboardState.chatType() === 'Channel') {
+    if (this.dashboardState.chatType() === 'channel') {
       this.dashboardState.threadId.set(threadId);
       this.dashboardState.openChatAnswers.set(true);
     }
