@@ -119,12 +119,18 @@
 </section>
 
 }
-
-
+@if (
+(dashboardState.chatType() === 'channel' && (channel$ | async)) ||
+(dashboardState.chatType() === 'directs' && (chat$ | async))
+) {
 <section class="content">
     <form class="example-form">
         <mat-form-field class="example-full-width">
-            <mat-label>Send message to #construction</mat-label>
+            @if (channel$ | async; as channel) {
+            <mat-label>Send message to #{{ channel?.['name'] }}</mat-label>
+            } @else if (chat$ | async; as chat){
+            <mat-label>Send message to #{{ getOtherUser(chat)?.name }}</mat-label>
+            }
             <textarea matInput placeholder="..." [(ngModel)]="messageInput" name="message"></textarea>
         </mat-form-field>
         <mat-toolbar class="message-toolbar">
@@ -151,3 +157,4 @@
         </mat-toolbar>
     </form>
 </section>
+}

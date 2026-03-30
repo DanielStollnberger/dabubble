@@ -23,14 +23,14 @@ ngOnInit() {
   if (isPlatformBrowser(this.platformId)) {
     const auth = getAuth();
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        this.router.navigate([`/dashboard`]);
-      }
-      if (!user) {
-        this.router.navigate(['/']);
-      }
-    });
+    // onAuthStateChanged(auth, (user) => {
+    //   if (user) {
+    //     this.router.navigate([`/dashboard`]);
+    //   }
+    //   if (!user) {
+    //     this.router.navigate(['/']);
+    //   }
+    // });
   }
 }
 }
