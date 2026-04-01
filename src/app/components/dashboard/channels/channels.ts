@@ -49,6 +49,8 @@ export class Channels {
   }
 
   addChannelDialogOpen(): void {
+    this.dashboardState.channelId.set(null);
+    this.dashboardState.chatType.set(null);
     const dialogRef = this.dialog.open(AddChannelDialog);
   }
 

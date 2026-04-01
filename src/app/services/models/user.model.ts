@@ -4,4 +4,5 @@ export interface User {
   email: string;
   avatar: string;
   createdAt: string; // ISO-Date String
+  isGuest?: boolean;
 }

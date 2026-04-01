@@ -11,7 +11,9 @@
         <mat-select [formControl]="selectedUsers" multiple>
             @if (users | async; as usersList) {
             @for (user of usersList; track user.id) {
-            <mat-option [value]="user">{{user.name}}</mat-option>
+                @if (!user.isGuest) {
+                    <mat-option [value]="user">{{ user.name }}</mat-option>
+                  }
             }
             }
         </mat-select>
@@ -42,9 +44,9 @@
         <mat-select [formControl]="selectedUsers" multiple>
             @if (users | async; as usersList) {
             @for (user of usersList; track user.id) {
-                <mat-option [value]="user.id">
-                    {{ user.name }}
-                  </mat-option>
+                @if (!user.isGuest) {
+                    <mat-option [value]="user.id">{{ user.name }}</mat-option>
+                  }
             }
             }
         </mat-select>

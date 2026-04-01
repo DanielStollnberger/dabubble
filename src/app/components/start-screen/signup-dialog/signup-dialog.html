@@ -1,0 +1,39 @@
+<h3 mat-dialog-title>Create Account</h3>
+
+<mat-dialog-content>
+
+  <mat-form-field appearance="outline" style="margin-top: 20px;">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" email [(ngModel)]="email" name="email" #emailInput="ngModel" placeholder="Enter your email" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Password</mat-label>
+    <input matInput type="password" [(ngModel)]="password" name="password" placeholder="Enter your password" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Username</mat-label>
+    <input matInput [(ngModel)]="name" name="name" placeholder="Your name">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Avatar URL</mat-label>
+    <input matInput [(ngModel)]="avatar" name="avatar" placeholder="Image URL">
+  </mat-form-field>
+
+  <div style="margin-top: 10px;">
+    <img [src]="avatar" style="width: 60px; height: 60px; border-radius: 50%;">
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>
+    Cancel
+  </button>
+
+  <button mat-flat-button color="primary" (click)="signUp()" mat-dialog-close [disabled]="emailInput.invalid || !password">
+    Sign Up
+  </button>
+</mat-dialog-actions>

@@ -92,14 +92,6 @@ export class MainChat {
     return this.users.find((user: any) => user.id === otherId);
   }
 
-  // getOtherUsers(channel: any) {
-  //   const myId = this.dashboardState.userId();
-
-  //   return channel.members
-  //     .filter((id: string) => id !== myId)
-  //     .map((id: string) => this.users.find(user => user.id === id));
-  // }
-
   async sendMessage(chatId: string) {
     const messagesRef = collection(this.firestore, 'directs', chatId, 'messages');
 

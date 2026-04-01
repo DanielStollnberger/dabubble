@@ -30,7 +30,8 @@
       </mat-card-content>
   
       <mat-card-actions>
-        <button mat-button>Create Account</button>
+        <button mat-button (click)="openSignup()">Quick Signup</button>
+        <button mat-button (click)="loginAsGuest()">Guest Login</button>
       </mat-card-actions>
   
     </mat-card>
