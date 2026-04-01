@@ -40,12 +40,7 @@ export class Dashboard {
   }
 
   ngOnInit() {
-    const auth = getAuth();
-    const user = auth.currentUser;
-  
-    if (user) {
-      this.dashboardState.userId.set(user.uid);
-    }
+    
   }
 
   toggleSidenav() {

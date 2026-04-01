@@ -9,13 +9,18 @@ import { DashboardStateService } from '../../../../state/dashboard-state.service
 import { UserService } from '../../../../services/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditUserDialog } from '../edit-user-dialog/edit-user-dialog';
+import { getAuth, signOut } from 'firebase/auth';
+import { Router } from '@angular/router';
+import {MatMenuModule} from '@angular/material/menu';
+
 
 @Component({
   selector: 'app-user-profile',
   imports: [
     MatIconButton,
     MatIconModule,
-    AsyncPipe
+    AsyncPipe,
+    MatMenuModule
   ],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.scss',
@@ -24,6 +29,8 @@ export class UserProfile {
   name$!: Observable<any>;
   firestore = inject(Firestore);
   userService = inject(UserService);
+  dashboardState = inject(DashboardStateService);
+  router = inject(Router);
   readonly dialog = inject(MatDialog);
 
   constructor() {
@@ -33,4 +40,13 @@ export class UserProfile {
   openEditUserDialog(){
     const dialogRef = this.dialog.open(EditUserDialog);
   }
+
+
+async logout() {
+  const auth = getAuth();
+  await signOut(auth);
+
+  this.dashboardState.userId.set(null);
+  this.router.navigate(['/']);
+}
 }
