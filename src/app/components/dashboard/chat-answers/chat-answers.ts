@@ -36,7 +36,7 @@ export class ChatAnswers {
   userService = inject(UserService);
   threadInput: string = '';
   firestore = inject(Firestore);
-   users: User[] = [];
+  users: User[] = [];
 
   ngOnInit() {
     this.userService.getAllUsers().subscribe(users => {
@@ -47,12 +47,12 @@ export class ChatAnswers {
   threadParent$ = toObservable(this.dashboardState.threadId).pipe(
     switchMap(threadId => {
       if (!threadId) return of(null);
-  
+
       // get thread meta first
       return docData(doc(this.firestore, `threads/${threadId}`)).pipe(
         switchMap((thread: any) => {
           if (!thread?.parentMessageId || !thread?.channelId) return of(null);
-  
+
           return docData(
             doc(
               this.firestore,
@@ -68,7 +68,7 @@ export class ChatAnswers {
   threadMessages$ = toObservable(this.dashboardState.threadId).pipe(
     switchMap(threadId => {
       if (!threadId) return of([]);
-  
+
       return collectionData(
         collection(this.firestore, `threads/${threadId}/messages`),
         { idField: 'id' }
@@ -81,22 +81,31 @@ export class ChatAnswers {
     return user;
   }
 
+  async createThreadAndSend(parentMessageId: string, channelId: string) {
+    const threadRef = await addDoc(collection(this.firestore, 'threads'), {
+      parentMessageId,
+      channelId,
+      createdAt: new Date().toISOString()
+    });
 
-    async sendThread(threadId: string) {
-      const messagesRef = collection(this.firestore, 'threads', threadId, 'messages');
-  
-      await addDoc(messagesRef, {
-        text: this.threadInput,
-        senderId: this.dashboardState.userId(),
-        createdAt: new Date().toISOString(),
-      });
-  
-      this.threadInput = '';
-    }
+    await this.sendThread(threadRef.id);
+  }
 
-    closeThread(){
-      this.dashboardState.openChatAnswers.set(false);
-    }
+  async sendThread(threadId: string) {
+    const messagesRef = collection(this.firestore, 'threads', threadId, 'messages');
+
+    await addDoc(messagesRef, {
+      text: this.threadInput,
+      senderId: this.dashboardState.userId(),
+      createdAt: new Date().toISOString(),
+    });
+
+    this.threadInput = '';
+  }
+
+  closeThread() {
+    this.dashboardState.openChatAnswers.set(false);
+  }
 
   constructor() {
     effect(() => {

@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { DashboardStateService } from '../../../state/dashboard-state.service';
 import { combineLatest, Observable, of, switchMap } from 'rxjs';
 import { collectionData, docData, Firestore } from '@angular/fire/firestore';
-import { addDoc, collection, doc, orderBy, query } from 'firebase/firestore';
+import { addDoc, collection, doc, orderBy, query, updateDoc } from 'firebase/firestore';
 import { AsyncPipe, DatePipe, NgClass } from '@angular/common';
 import { User } from '../../../services/models/user.model';
 import { Channel } from '../../../services/models/channel.model';
@@ -132,11 +132,37 @@ export class MainChat {
     this.dashboardState.channelId.set(null);
   }
 
-  openThread(threadId: any) {
-    if (this.dashboardState.chatType() === 'channel') {
-      this.dashboardState.threadId.set(threadId);
-      this.dashboardState.openChatAnswers.set(true);
+  async openThread(message: any) {
+    if (this.dashboardState.channelId()){
+    // 🔴 FALL: Thread existiert NICHT
+    if (!message.threadId) {
+  
+      const threadRef = await addDoc(
+        collection(this.firestore, 'threads'),
+        {
+          parentMessageId: message.id,
+          channelId: this.dashboardState.channelId(),
+          createdAt: new Date().toISOString()
+        }
+      );
+  
+      // 🔥 WICHTIG: threadId in Message speichern!
+      await updateDoc(
+        doc(this.firestore, `channels/${this.dashboardState.channelId()}/messages/${message.id}`),
+        {
+          threadId: threadRef.id
+        }
+      );
+  
+      this.dashboardState.threadId.set(threadRef.id);
+  
+    } else {
+      // ✅ Thread existiert
+      this.dashboardState.threadId.set(message.threadId);
     }
+  
+    this.dashboardState.openChatAnswers.set(true);
+  }
   }
 
   addUserToChannel() {

@@ -69,15 +69,16 @@ form {
 .chat-section {
     width: calc(100% - 20px);
     position: absolute;
-    top: 100px;        
-    bottom: 160px;     
+    top: 100px;
+    bottom: 160px;
     left: 0;
     right: 0;
-    overflow-y: auto;   
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding: 10px;
+
     .message {
         max-width: calc(100% - 20px);
         border: 1px solid rgb(0, 0, 0, 0.1);
@@ -119,7 +120,8 @@ form {
             flex: 1;
             padding: 3px 3px;
             flex-direction: column;
-            .thread-info{
+
+            .thread-info {
                 color: black;
                 margin-left: 3px;
                 font-size: 15px;
@@ -127,6 +129,13 @@ form {
                 justify-content: end;
                 flex: 1;
                 align-items: end;
+                p {
+                    background: whitesmoke;
+                    border-radius: 3px;
+                    color: rgb(0, 0, 0, 0.7);
+                    padding: 2px;
+                    margin: 0;
+                }
             }
         }
     }
@@ -174,14 +183,22 @@ form {
             color: rgb(0, 0, 0, 0.3);
             padding: 3px 3px;
             flex-direction: column;
-            .thread-info{
-                color: black;
+
+            .thread-info {
                 margin-left: 3px;
                 font-size: 15px;
                 display: flex;
                 justify-content: start;
                 flex: 1;
                 align-items: end;
+
+                p {
+                    background: whitesmoke;
+                    border-radius: 3px;
+                    color: rgb(0, 0, 0, 0.7);
+                    padding: 2px;
+                    margin: 0;
+                }
             }
         }
     }

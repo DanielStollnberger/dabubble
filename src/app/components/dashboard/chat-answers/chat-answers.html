@@ -1,32 +1,32 @@
-@if (threadMessages$ | async; as messages)
-{
 @if (threadParent$ | async; as parent) {
-    <mat-toolbar class="main-header" color="primary">
-        <div class="header-left">
-          <button mat-icon-button (click)="closeThread()">
+
+@if (threadMessages$ | async; as messages){
+<mat-toolbar class="main-header" color="primary">
+    <div class="header-left">
+        <button mat-icon-button (click)="closeThread()">
             <mat-icon>arrow_back</mat-icon>
-          </button>
-      
-          <div class="thread-message">
+        </button>
+
+        <div class="thread-message">
             <div class="thread-top">
-              <span class="thread-label">Message</span>
-              <span class="thread-author">
-                von <strong>{{ getUserById(parent['senderId'])?.name }}</strong>
-              </span>
+                <span class="thread-label">Message</span>
+                <span class="thread-author">
+                    von <strong>{{ getUserById(parent['senderId'])?.name }}</strong>
+                </span>
             </div>
-      
+
             <p class="thread-text">
-             {{ parent['text'] }}
+                {{ parent['text'] }}
             </p>
-      
+
             <span class="thread-date">
-            vom  {{ parent['createdAt'] | date:'dd.MM.yyyy HH:mm' }}
+                vom {{ parent['createdAt'] | date:'dd.MM.yyyy HH:mm' }}
             </span>
-          </div>
         </div>
-   
-      </mat-toolbar>
-}
+    </div>
+
+</mat-toolbar>
+
 
 <section class="chat-section">
     @for (message of messages; track message.id) {
@@ -70,7 +70,7 @@
 <section class="content">
     <form class="example-form">
         <mat-form-field class="example-full-width">
-            <mat-label>Send message to #construction</mat-label>
+            <mat-label>Answer to @thread</mat-label>
             <textarea matInput placeholder="..." [(ngModel)]="threadInput" name="message"></textarea>
         </mat-form-field>
         <mat-toolbar class="message-toolbar">
@@ -85,11 +85,10 @@
                 <mat-icon>alternate_email</mat-icon>
             </button>
             <div class="space-between"></div>
-            @if (dashboardState.threadId()) {
             <button matIconButton (click)="sendThread(dashboardState.threadId()!)">
                 <mat-icon>send</mat-icon>
             </button>
-            }
         </mat-toolbar>
     </form>
 </section>
+}
