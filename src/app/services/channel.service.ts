@@ -10,8 +10,7 @@ export class ChannelService {
   firestore = inject(Firestore)
   dashboardState = inject(DashboardStateService);
 
-  getUserChannels() {
-    const userId = this.dashboardState.userId();
+  getUserChannels(userId:string) {
 
     const ref = collection(this.firestore, 'channels');
     const q = query(ref, where('members', 'array-contains', userId));

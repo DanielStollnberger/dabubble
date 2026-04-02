@@ -11,9 +11,7 @@ export class DirectService {
   firestore = inject(Firestore)
   dashboardState = inject(DashboardStateService);
 
-  getUserChats() {
-    const userId = this.dashboardState.userId();
-
+  getUserChats(userId:string) {
     const ref = collection(this.firestore, 'directs');
     const q = query(ref, where('members', 'array-contains', userId));
 

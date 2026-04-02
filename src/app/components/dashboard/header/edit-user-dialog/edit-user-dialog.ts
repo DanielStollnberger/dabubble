@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
@@ -31,6 +31,7 @@ export class EditUserDialog {
   firestore = inject(Firestore);
   userService = inject(UserService);
   dashboardState = inject(DashboardStateService);
+  cdr = inject(ChangeDetectorRef);
   user: User = {
     name: '',
     avatar: '',
@@ -45,6 +46,7 @@ export class EditUserDialog {
     this.user$.subscribe(user => {
       if (user) {
           this.user = { ...user };
+          this.cdr.detectChanges();
       }
     });
   }

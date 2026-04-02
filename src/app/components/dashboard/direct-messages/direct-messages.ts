@@ -5,11 +5,12 @@ import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { collection } from 'firebase/firestore';
-import { Observable } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { DashboardStateService } from '../../../state/dashboard-state.service';
 import { DirectService } from '../../../services/direct.service';
 import { subscribe } from 'diagnostics_channel';
 import { UserService } from '../../../services/user.service';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-direct-messages',
@@ -29,11 +30,16 @@ export class DirectMessages {
   userService = inject(UserService);
   dashboardState = inject(DashboardStateService);
   directService = inject(DirectService);
-  users:any;
+  users: any;
   directsOpen = true;
 
   constructor() {
-    this.chats$ = this.chatService.getUserChats();
+    this.chats$ = toObservable(this.dashboardState.userId).pipe(
+      switchMap(userId => {
+        if (!userId) return of([]);
+        return this.chatService.getUserChats(userId);
+      })
+    );
 
     // 🔥 alle users einmal laden
     this.userService.getAllUsers().subscribe(users => {
@@ -43,7 +49,7 @@ export class DirectMessages {
 
   openChat(id: string) {
     this.dashboardState.openChatAnswers.set(false);
-    this.dashboardState.channelId.set(null); 
+    this.dashboardState.channelId.set(null);
     this.dashboardState.chatId.set(id);
     this.dashboardState.chatType.set('directs');
   }
@@ -54,6 +60,8 @@ export class DirectMessages {
 
   getOtherUser(direct: any) {
     const myId = this.dashboardState.userId();
+  
+    if (!myId || !direct?.members || !this.users) return null;
   
     const otherId = direct.members.find((id: string) => id !== myId);
   

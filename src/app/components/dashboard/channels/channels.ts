@@ -20,6 +20,8 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { AddChannelDialog } from './add-channel-dialog/add-channel-dialog';
+import { toObservable } from '@angular/core/rxjs-interop';
+
 
 @Component({
   selector: 'app-channels',
@@ -40,8 +42,14 @@ export class Channels {
   channelsOpen = true;
   readonly dialog = inject(MatDialog);
 
+
   constructor() {
-    this.channels$ = this.channelService.getUserChannels();
+    this.channels$ = toObservable(this.dashboardState.userId).pipe(
+      switchMap(userId => {
+        if (!userId) return of([]);
+        return this.channelService.getUserChannels(userId);
+      })
+    );
   }
 
   toggleChannels() {
