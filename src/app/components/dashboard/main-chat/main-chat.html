@@ -18,7 +18,7 @@
         }
         }
         <div>
-            <button matIconButton (click)="addUserToChannel()">
+            <button matIconButton (click)="addUserToChannel()" matTooltip="Edit Channel">
                 <mat-icon>settings</mat-icon>
             </button>
         </div>
@@ -72,18 +72,18 @@
     @let user = getUserById(message.senderId);
 
     @if (message.senderId == dashboardState.userId()) {
-    <div class="message-self" (click)="openThread(message)">
+    <div class="message-self">
         <div class="message-date">
             <div>
                 <span>{{ message.createdAt | date:'dd.MM.yyyy' }} | </span>
                 <span>{{ message.createdAt | date:'HH:mm' }}</span>
             </div>
             <div class="thread-info">
-                <button matIconButton (click)="openThread(message)">
+                <button matIconButton (click)="openThread(message)" matTooltip="Answer!">
                     <mat-icon>reply_all</mat-icon>
                 </button>
 
-                <button matIconButton (click)="openReactionDialog(message.id)">
+                <button matIconButton (click)="openReactionDialog(message.id)" matTooltip="Reaction!">
                     <mat-icon>add_reaction</mat-icon>
                 </button>
             </div>
@@ -99,7 +99,7 @@
                 }
                 @if (dashboardState.chatType() === 'channel') {
                 @if (dashboardState.chatType() === 'channel' && message.threadId.length > 0) {
-                <p (click)="openThread(message)">
+                <p (click)="openThread(message)" style="color: black; margin-left: 5px;" matTooltip="Show Answers!">
                     Answers
                 </p>
                 }
@@ -126,11 +126,11 @@
             </div>
             <div class="thread-info">
 
-                <button matIconButton (click)="openThread(message)">
+                <button matIconButton (click)="openThread(message)" matTooltip="Answer!">
                     <mat-icon>reply_all</mat-icon>
                 </button>
 
-                <button matIconButton (click)="openReactionDialog(message.id)">
+                <button matIconButton (click)="openReactionDialog(message.id)" matTooltip="Reaction!">
                     <mat-icon>add_reaction</mat-icon>
                 </button>
             </div>
@@ -144,7 +144,7 @@
                 }
                 @if (dashboardState.chatType() === 'channel') {
                 @if (dashboardState.chatType() === 'channel' && message.threadId.length > 0) {
-                <p (click)="openThread(message)">
+                <p (click)="openThread(message)" style="color: black; margin-left: 5px;" matTooltip="Show Answers!">
                     Answers
                 </p>
                 }

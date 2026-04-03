@@ -20,7 +20,7 @@ import { AddChannelDialog } from '../channels/add-channel-dialog/add-channel-dia
 import { MatDialog } from '@angular/material/dialog';
 import { ThreadService } from '../../../services/threads.service';
 import { ReactionsDialog } from './reactions-dialog/reactions-dialog';
-
+import {MatTooltip} from '@angular/material/tooltip';
 
 
 @Component({
@@ -33,7 +33,8 @@ import { ReactionsDialog } from './reactions-dialog/reactions-dialog';
     MatFormFieldModule,
     MatInputModule,
     AsyncPipe,
-    DatePipe
+    DatePipe,
+    MatTooltip
   ],
   templateUrl: './main-chat.html',
   styleUrl: './main-chat.scss',

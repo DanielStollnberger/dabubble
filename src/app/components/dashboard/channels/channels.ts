@@ -21,6 +21,7 @@ import {
 } from '@angular/material/dialog';
 import { AddChannelDialog } from './add-channel-dialog/add-channel-dialog';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { MatTooltip } from '@angular/material/tooltip';
 
 
 @Component({
@@ -29,7 +30,8 @@ import { toObservable } from '@angular/core/rxjs-interop';
     MatToolbarModule,
     MatIcon,
     MatIconButton,
-    AsyncPipe
+    AsyncPipe,
+    MatTooltip
   ],
   templateUrl: './channels.html',
   styleUrl: './channels.scss',
