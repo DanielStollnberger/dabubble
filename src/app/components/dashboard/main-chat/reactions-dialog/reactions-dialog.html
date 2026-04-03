@@ -1,0 +1,9 @@
+<mat-dialog-content>
+    <mat-form-field appearance="outline" style="margin-top: 20px;">
+        <mat-label>Your Reaction</mat-label>
+        <input matInput placeholder="😀" [(ngModel)]="reaction" name="reaction">
+    </mat-form-field>
+    <button matButton (click)="sendReaction()" mat-dialog-close>
+        <mat-icon>send</mat-icon>
+    </button>
+</mat-dialog-content>

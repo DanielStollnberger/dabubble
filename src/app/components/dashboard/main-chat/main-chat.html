@@ -79,9 +79,29 @@
                 <span>{{ message.createdAt | date:'HH:mm' }}</span>
             </div>
             <div class="thread-info">
+                <button matIconButton (click)="openThread(message)">
+                    <mat-icon>reply_all</mat-icon>
+                </button>
+
+                <button matIconButton (click)="openReactionDialog(message.id)">
+                    <mat-icon>add_reaction</mat-icon>
+                </button>
+            </div>
+            <div class='reactions'>
+                @if (getReactionCount(message) > 0) {
+                @if (getReactionCount(message) > 0) {
+                @for (reaction of getReactions(message); track reaction[0]) {
+                <span style="color: black;">
+                    {{ reaction[0] }}
+                </span>
+                }
+                }
+                }
                 @if (dashboardState.chatType() === 'channel') {
-                @if (message.threadId.length > 0) {
-                    <p>THREAD</p>
+                @if (dashboardState.chatType() === 'channel' && message.threadId.length > 0) {
+                <p (click)="openThread(message)">
+                    Answers
+                </p>
                 }
                 }
             </div>
@@ -93,7 +113,7 @@
         <img [src]="user?.avatar">
     </div>
     } @else {
-    <div class="message" (click)="openThread(message)">
+    <div class="message">
         <img [src]="user?.avatar">
         <div class="message-info">
             <h4>{{ user?.name }}</h4>
@@ -105,9 +125,28 @@
                 <span>{{ message.createdAt | date:'HH:mm' }}</span>
             </div>
             <div class="thread-info">
+
+                <button matIconButton (click)="openThread(message)">
+                    <mat-icon>reply_all</mat-icon>
+                </button>
+
+                <button matIconButton (click)="openReactionDialog(message.id)">
+                    <mat-icon>add_reaction</mat-icon>
+                </button>
+            </div>
+            <div class='reactions'>
+                @if (getReactionCount(message) > 0) {
+                @for (reaction of getReactions(message); track reaction[0]) {
+                <span style="color: black;">
+                    {{ reaction[0] }}
+                </span>
+                }
+                }
                 @if (dashboardState.chatType() === 'channel') {
                 @if (dashboardState.chatType() === 'channel' && message.threadId.length > 0) {
-                    <p>THREAD</p>
+                <p (click)="openThread(message)">
+                    Answers
+                </p>
                 }
                 }
             </div>

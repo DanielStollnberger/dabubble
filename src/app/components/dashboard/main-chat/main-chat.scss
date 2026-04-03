@@ -120,6 +120,7 @@ form {
             flex: 1;
             padding: 3px 3px;
             flex-direction: column;
+            position: relative;
 
             .thread-info {
                 color: black;
@@ -129,11 +130,20 @@ form {
                 justify-content: end;
                 flex: 1;
                 align-items: end;
-                p {
-                    background: whitesmoke;
-                    border-radius: 3px;
-                    color: rgb(0, 0, 0, 0.7);
-                    padding: 2px;
+            }
+
+            .reactions{
+                gap: 5px;
+                position: absolute;
+                right: 5px;
+                bottom: -8.5px;
+                background: #f4ded3;
+                z-index: 10;
+                padding: 0 3px;
+                border-radius: 4px;
+                display: flex;
+                flex-direction: row;
+                p{
                     margin: 0;
                 }
             }
@@ -183,6 +193,7 @@ form {
             color: rgb(0, 0, 0, 0.3);
             padding: 3px 3px;
             flex-direction: column;
+            position: relative;
 
             .thread-info {
                 margin-left: 3px;
@@ -191,12 +202,19 @@ form {
                 justify-content: start;
                 flex: 1;
                 align-items: end;
-
-                p {
-                    background: whitesmoke;
-                    border-radius: 3px;
-                    color: rgb(0, 0, 0, 0.7);
-                    padding: 2px;
+            }
+            .reactions{
+                gap: 5px;
+                position: absolute;
+                left: 5px;
+                bottom: -8.5px;
+                background: #f4ded3;
+                z-index: 10;
+                padding: 0 3px;
+                border-radius: 4px;
+                display: flex;
+                flex-direction: row;
+                p{
                     margin: 0;
                 }
             }

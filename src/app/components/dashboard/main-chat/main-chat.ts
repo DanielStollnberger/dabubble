@@ -18,6 +18,8 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { threadId } from 'node:worker_threads';
 import { AddChannelDialog } from '../channels/add-channel-dialog/add-channel-dialog';
 import { MatDialog } from '@angular/material/dialog';
+import { ThreadService } from '../../../services/threads.service';
+import { ReactionsDialog } from './reactions-dialog/reactions-dialog';
 
 
 
@@ -45,6 +47,7 @@ export class MainChat {
   userService = inject(UserService);
   users: User[] = [];
   messageInput: string = '';
+  threadService = inject(ThreadService);
   readonly dialog = inject(MatDialog);
 
   channel$ = toObservable(this.dashboardState.channelId).pipe(
@@ -161,6 +164,19 @@ export class MainChat {
     const dialogRef = this.dialog.open(AddChannelDialog);
     this.dashboardState.editChannel.set(true);
   }
+
+  getReactionCount(message: any): number {
+    return Object.keys(message?.reactions || {}).length;
+  }
+
+  getReactions(message: any) {
+    return Object.entries(message?.reactions || {});
+  }
+
+openReactionDialog(messageId:any){
+  const dialogRef = this.dialog.open(ReactionsDialog);
+  this.dashboardState.messageId.set(messageId);
+}
 
   constructor() {
   }

@@ -11,4 +11,5 @@ export class DashboardStateService {
   chatType = signal<string | null>(null);
   openChatAnswers = signal<boolean>(false);
   editChannel = signal<boolean>(false);
+  messageId = signal<string | null>(null);
 }
