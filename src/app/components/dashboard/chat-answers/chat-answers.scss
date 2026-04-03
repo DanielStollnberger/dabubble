@@ -169,9 +169,8 @@ form {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      max-width: 600px;
+      max-width: 300px;
       flex: 1;
-      align-items: center;
   
       .thread-top {
         display: flex;
@@ -209,6 +208,7 @@ form {
         background: rgb(95, 70, 70);
         border: 1px solid white;
         border-radius: 10px;
+        display: flex;
       }
   
       .thread-date {

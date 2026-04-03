@@ -3,12 +3,11 @@
 @if (threadMessages$ | async; as messages){
 <mat-toolbar class="main-header" color="primary">
     <div class="header-left">
-        <button mat-icon-button (click)="closeThread()">
-            <mat-icon>arrow_back</mat-icon>
-        </button>
-
         <div class="thread-message">
             <div class="thread-top">
+                <button mat-icon-button (click)="closeThread()">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
                 <span class="thread-label">Message</span>
                 <span class="thread-author">
                     von <strong>{{ getUserById(parent['senderId'])?.name }}</strong>

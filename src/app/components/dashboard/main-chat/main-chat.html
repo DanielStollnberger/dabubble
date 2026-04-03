@@ -47,17 +47,21 @@
 <mat-toolbar class="main-header new-message">
     <h1>New Massage</h1>
     <div class="placeholder-message">
-        <mat-form-field>
-            <mat-label>...to Channel or new Direct</mat-label>
-            <input matInput>
+        <mat-form-field class="example-full-width">
+            <mat-label>Search user...</mat-label>
+        
+            <input matInput [(ngModel)]="searchValue" (input)="onSearchChange()">
         </mat-form-field>
-        <div>
-            <button matIconButton>
-                <mat-icon>send</mat-icon>
-            </button>
-        </div>
     </div>
 </mat-toolbar>
+<div class="search-results">
+    @for (user of filteredUsers; track user.id) {
+    <div class="result-item" (click)="openOrCreateDirectChat(user.id)">
+        <img [src]="user?.avatar">
+        {{ user.name }}
+    </div>
+    }
+</div>
 }
 
 
@@ -79,31 +83,31 @@
                 <span>{{ message.createdAt | date:'HH:mm' }}</span>
             </div>
             <div class="thread-info">
+                @if (dashboardState.chatType() === 'channel') {
                 <button matIconButton (click)="openThread(message)" matTooltip="Answer!">
                     <mat-icon>reply_all</mat-icon>
                 </button>
-
-                <button matIconButton (click)="openReactionDialog(message.id)" matTooltip="Reaction!">
+            }
+                <button matIconButton (click)="openReactionDialog(message.id)" matTooltip="React!">
                     <mat-icon>add_reaction</mat-icon>
                 </button>
             </div>
             <div class='reactions'>
                 @if (getReactionCount(message) > 0) {
-                @if (getReactionCount(message) > 0) {
                 @for (reaction of getReactions(message); track reaction[0]) {
                 <span style="color: black;">
+                    @if( reaction[1].length > 1 ){
+                    {{ reaction[1].length }}
+                    }
                     {{ reaction[0] }}
                 </span>
                 }
                 }
-                }
-                @if (dashboardState.chatType() === 'channel') {
-                @if (dashboardState.chatType() === 'channel' && message.threadId.length > 0) {
-                <p (click)="openThread(message)" style="color: black; margin-left: 5px;" matTooltip="Show Answers!">
-                    Answers
-                </p>
-                }
-                }
+                @if (dashboardState.chatType() === 'channel' && (message.replyCount || 0) > 0) {
+                    <p (click)="openThread(message)">
+                      {{ message.replyCount }} Answers
+                    </p>
+                  }
             </div>
         </div>
         <div class="message-info">
@@ -125,12 +129,12 @@
                 <span>{{ message.createdAt | date:'HH:mm' }}</span>
             </div>
             <div class="thread-info">
-
+                @if (dashboardState.chatType() === 'channel') {
                 <button matIconButton (click)="openThread(message)" matTooltip="Answer!">
                     <mat-icon>reply_all</mat-icon>
                 </button>
-
-                <button matIconButton (click)="openReactionDialog(message.id)" matTooltip="Reaction!">
+            }
+                <button matIconButton (click)="openReactionDialog(message.id)" matTooltip="React!">
                     <mat-icon>add_reaction</mat-icon>
                 </button>
             </div>
@@ -138,17 +142,18 @@
                 @if (getReactionCount(message) > 0) {
                 @for (reaction of getReactions(message); track reaction[0]) {
                 <span style="color: black;">
+                    @if( reaction[1].length > 1 ){
+                    {{ reaction[1].length }}
+                    }
                     {{ reaction[0] }}
                 </span>
                 }
                 }
-                @if (dashboardState.chatType() === 'channel') {
-                @if (dashboardState.chatType() === 'channel' && message.threadId.length > 0) {
-                <p (click)="openThread(message)" style="color: black; margin-left: 5px;" matTooltip="Show Answers!">
-                    Answers
-                </p>
-                }
-                }
+                @if (dashboardState.chatType() === 'channel' && (message.replyCount || 0) > 0) {
+                    <p (click)="openThread(message)">
+                      {{ message.replyCount }} Answers
+                    </p>
+                  }
             </div>
         </div>
     </div>

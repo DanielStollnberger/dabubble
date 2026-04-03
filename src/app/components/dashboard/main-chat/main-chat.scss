@@ -42,6 +42,26 @@
     }
 }
 
+.search-results{
+    display: flex;
+    flex-direction: column;
+    .result-item{
+        background: #f4ded3;
+        border-radius: 10px;
+        margin-bottom: 2px;
+        display: flex;
+        align-items: center;
+        padding: 10px 30px;
+        &:hover{
+            background: #a52a2a16;
+            cursor: pointer;
+        }
+        img{
+            height: 50px;
+        }
+    }
+}
+
 form {
     margin: 20px;
     position: absolute;
@@ -143,6 +163,7 @@ form {
                 border-radius: 4px;
                 display: flex;
                 flex-direction: row;
+                white-space: nowrap;
                 p{
                     margin: 0;
                 }
@@ -214,6 +235,7 @@ form {
                 border-radius: 4px;
                 display: flex;
                 flex-direction: row;
+                white-space: nowrap;
                 p{
                     margin: 0;
                 }

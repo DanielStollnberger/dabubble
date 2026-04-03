@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { DashboardStateService } from '../../../state/dashboard-state.service';
 import { combineLatest, Observable, of, switchMap } from 'rxjs';
 import { collectionData, docData, Firestore } from '@angular/fire/firestore';
-import { addDoc, collection, doc, orderBy, query, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, orderBy, query, updateDoc } from 'firebase/firestore';
 import { AsyncPipe, DatePipe, NgClass } from '@angular/common';
 import { User } from '../../../services/models/user.model';
 import { Channel } from '../../../services/models/channel.model';
@@ -34,7 +34,7 @@ import {MatTooltip} from '@angular/material/tooltip';
     MatInputModule,
     AsyncPipe,
     DatePipe,
-    MatTooltip
+    MatTooltip,
   ],
   templateUrl: './main-chat.html',
   styleUrl: './main-chat.scss',
@@ -49,6 +49,8 @@ export class MainChat {
   users: User[] = [];
   messageInput: string = '';
   threadService = inject(ThreadService);
+  searchValue: string = '';
+filteredUsers: User[] = [];
   readonly dialog = inject(MatDialog);
 
   channel$ = toObservable(this.dashboardState.channelId).pipe(
@@ -82,6 +84,71 @@ export class MainChat {
     this.userService.getAllUsers().subscribe(users => {
       this.users = users;
     });
+  }
+
+  onSearchChange() {
+    const value = this.searchValue.toLowerCase();
+  
+    this.filteredUsers = this.users.filter(user =>
+      user.name.toLowerCase().includes(value)
+    );
+  }
+
+  selectUser(user: User) {
+    this.dashboardState.chatType.set('directs');
+  
+    console.log('selected:', user);
+  
+    this.openChat(user.id);
+  }
+
+  async openOrCreateDirectChat(otherUserId: string) {
+    const myId = this.dashboardState.userId();
+  
+    if (!myId) return;
+  
+    const members = [myId, otherUserId].sort();
+  
+    // 🔍 alle directs holen
+    const directsRef = collection(this.firestore, 'directs');
+  
+    const snapshot = await getDocs(directsRef);
+  
+    let existingChat: any = null;
+  
+    snapshot.forEach(docSnap => {
+      const data = docSnap.data();
+  
+      if (
+        data['members'] &&
+        JSON.stringify(data['members']) === JSON.stringify(members)
+      ) {
+        existingChat = { id: docSnap.id, ...data };
+      }
+    });
+  
+    // ✅ Chat existiert
+    if (existingChat) {
+      this.dashboardState.chatType.set('directs');
+      this.dashboardState.chatId.set(existingChat.id);
+      return;
+    }
+  
+    // ❌ Chat existiert nicht → erstellen
+    const newChatRef = await addDoc(directsRef, {
+      members,
+      createdAt: new Date().toISOString()
+    });
+  
+    this.dashboardState.chatType.set('directs');
+    this.dashboardState.chatId.set(newChatRef.id);
+  }
+
+  openChat(id: string) {
+    this.dashboardState.openChatAnswers.set(false);
+    this.dashboardState.channelId.set(null);
+    this.dashboardState.chatId.set(id);
+    this.dashboardState.chatType.set('directs');
   }
 
   getUserById(userId: string): User | undefined {
@@ -170,8 +237,8 @@ export class MainChat {
     return Object.keys(message?.reactions || {}).length;
   }
 
-  getReactions(message: any) {
-    return Object.entries(message?.reactions || {});
+  getReactions(message: any): [string, string[]][] {
+    return Object.entries(message?.reactions || {}) as [string, string[]][];
   }
 
 openReactionDialog(messageId:any){

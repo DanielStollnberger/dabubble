@@ -4,7 +4,7 @@ import { log } from 'node:console';
 import { collectionData, docData, Firestore } from '@angular/fire/firestore';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Observable, of, switchMap } from 'rxjs';
-import { addDoc, collection, doc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, increment, updateDoc } from 'firebase/firestore';
 import { threadId } from 'node:worker_threads';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { UserService } from '../../../services/user.service';
@@ -91,15 +91,43 @@ export class ChatAnswers {
     await this.sendThread(threadRef.id);
   }
 
+  // async sendThread(threadId: string) {
+  //   const messagesRef = collection(this.firestore, 'threads', threadId, 'messages');
+
+  //   await addDoc(messagesRef, {
+  //     text: this.threadInput,
+  //     senderId: this.dashboardState.userId(),
+  //     createdAt: new Date().toISOString(),
+  //   });
+
+  //   this.threadInput = '';
+  // }
+
   async sendThread(threadId: string) {
     const messagesRef = collection(this.firestore, 'threads', threadId, 'messages');
-
+  
     await addDoc(messagesRef, {
       text: this.threadInput,
       senderId: this.dashboardState.userId(),
       createdAt: new Date().toISOString(),
     });
-
+  
+    // 🔥 THREAD META HOLEN
+    const threadDoc = await getDoc(doc(this.firestore, `threads/${threadId}`));
+    const threadData = threadDoc.data();
+  
+    if (threadData?.['parentMessageId'] && threadData?.['channelId']) {
+      await updateDoc(
+        doc(
+          this.firestore,
+          `channels/${threadData['channelId']}/messages/${threadData['parentMessageId']}`
+        ),
+        {
+          replyCount: increment(1)
+        }
+      );
+    }
+  
     this.threadInput = '';
   }
 
