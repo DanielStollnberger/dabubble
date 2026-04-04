@@ -49,17 +49,19 @@
     <div class="placeholder-message">
         <mat-form-field class="example-full-width">
             <mat-label>Search user...</mat-label>
-        
+
             <input matInput [(ngModel)]="searchValue" (input)="onSearchChange()">
         </mat-form-field>
     </div>
 </mat-toolbar>
 <div class="search-results">
     @for (user of filteredUsers; track user.id) {
+    @if (user.id != dashboardState.userId()) {
     <div class="result-item" (click)="openOrCreateDirectChat(user.id)">
         <img [src]="user?.avatar">
         {{ user.name }}
     </div>
+    }
     }
 </div>
 }
@@ -72,8 +74,14 @@
 
 <section class="chat-section">
     @if (messages$ | async; as messages) {
-    @for (message of messages; track message.id) {
+    @for (message of messages; track message.id; let i = $index) {
     @let user = getUserById(message.senderId);
+
+    @if (shouldShowDateDivider(messages, i)) {
+        <div class="date-divider">
+          {{ getDateLabel(message.createdAt) }}
+        </div>
+      }
 
     @if (message.senderId == dashboardState.userId()) {
     <div class="message-self">
@@ -87,7 +95,7 @@
                 <button matIconButton (click)="openThread(message)" matTooltip="Answer!">
                     <mat-icon>reply_all</mat-icon>
                 </button>
-            }
+                }
                 <button matIconButton (click)="openReactionDialog(message.id)" matTooltip="React!">
                     <mat-icon>add_reaction</mat-icon>
                 </button>
@@ -104,10 +112,10 @@
                 }
                 }
                 @if (dashboardState.chatType() === 'channel' && (message.replyCount || 0) > 0) {
-                    <p (click)="openThread(message)">
-                      {{ message.replyCount }} Answers
-                    </p>
-                  }
+                <p (click)="openThread(message)">
+                    {{ message.replyCount }} Answers
+                </p>
+                }
             </div>
         </div>
         <div class="message-info">
@@ -133,7 +141,7 @@
                 <button matIconButton (click)="openThread(message)" matTooltip="Answer!">
                     <mat-icon>reply_all</mat-icon>
                 </button>
-            }
+                }
                 <button matIconButton (click)="openReactionDialog(message.id)" matTooltip="React!">
                     <mat-icon>add_reaction</mat-icon>
                 </button>
@@ -150,10 +158,10 @@
                 }
                 }
                 @if (dashboardState.chatType() === 'channel' && (message.replyCount || 0) > 0) {
-                    <p (click)="openThread(message)">
-                      {{ message.replyCount }} Answers
-                    </p>
-                  }
+                <p (click)="openThread(message)">
+                    {{ message.replyCount }} Answers
+                </p>
+                }
             </div>
         </div>
     </div>
@@ -178,7 +186,7 @@
             <textarea matInput placeholder="..." [(ngModel)]="messageInput" name="message"></textarea>
         </mat-form-field>
         <mat-toolbar class="message-toolbar">
-            <button matIconButton>
+            <button matIconButton matTooltip="musst du zahlen ashlock">
                 <mat-icon>add</mat-icon>
             </button>
             <span>|</span>

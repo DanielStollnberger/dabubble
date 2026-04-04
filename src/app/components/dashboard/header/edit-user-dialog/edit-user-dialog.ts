@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { User } from '../../../../services/models/user.model';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 @Component({
   selector: 'app-edit-user-dialog',
   imports: [
@@ -21,7 +22,8 @@ import { MatButton } from '@angular/material/button';
     MatFormFieldModule,
     FormsModule,
     MatInputModule,
-    MatButton
+    MatButton,
+    MatSelectModule
   ],
   templateUrl: './edit-user-dialog.html',
   styleUrl: './edit-user-dialog.scss',
@@ -32,6 +34,11 @@ export class EditUserDialog {
   userService = inject(UserService);
   dashboardState = inject(DashboardStateService);
   cdr = inject(ChangeDetectorRef);
+  profilePictures:string[] = [
+    '/assets/img/profile.png',
+    '/assets/img/profile-two.png',
+    '/assets/img/profile-girl.png'
+  ];
   user: User = {
     name: '',
     avatar: '',

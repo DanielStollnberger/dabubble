@@ -20,7 +20,7 @@ import { AddChannelDialog } from '../channels/add-channel-dialog/add-channel-dia
 import { MatDialog } from '@angular/material/dialog';
 import { ThreadService } from '../../../services/threads.service';
 import { ReactionsDialog } from './reactions-dialog/reactions-dialog';
-import {MatTooltip} from '@angular/material/tooltip';
+import { MatTooltip } from '@angular/material/tooltip';
 
 
 @Component({
@@ -50,7 +50,7 @@ export class MainChat {
   messageInput: string = '';
   threadService = inject(ThreadService);
   searchValue: string = '';
-filteredUsers: User[] = [];
+  filteredUsers: User[] = [];
   readonly dialog = inject(MatDialog);
 
   channel$ = toObservable(this.dashboardState.channelId).pipe(
@@ -58,7 +58,10 @@ filteredUsers: User[] = [];
       if (!channelId) return of(null);
 
       this.messages$ = collectionData(
-        collection(this.firestore, `channels/${channelId}/messages`),
+        query(
+          collection(this.firestore, `channels/${channelId}/messages`),
+          orderBy('createdAt', 'asc') // 🔥
+        ),
         { idField: 'id' }
       );
 
@@ -71,7 +74,10 @@ filteredUsers: User[] = [];
       if (!chatId) return of(null);
 
       this.messages$ = collectionData(
-        collection(this.firestore, `directs/${chatId}/messages`),
+        query(
+          collection(this.firestore, `directs/${chatId}/messages`),
+          orderBy('createdAt', 'asc')
+        ),
         { idField: 'id' }
       );
 
@@ -88,37 +94,29 @@ filteredUsers: User[] = [];
 
   onSearchChange() {
     const value = this.searchValue.toLowerCase();
-  
+
     this.filteredUsers = this.users.filter(user =>
       user.name.toLowerCase().includes(value)
     );
   }
 
-  selectUser(user: User) {
-    this.dashboardState.chatType.set('directs');
-  
-    console.log('selected:', user);
-  
-    this.openChat(user.id);
-  }
-
   async openOrCreateDirectChat(otherUserId: string) {
     const myId = this.dashboardState.userId();
-  
+
     if (!myId) return;
-  
+
     const members = [myId, otherUserId].sort();
-  
+
     // 🔍 alle directs holen
     const directsRef = collection(this.firestore, 'directs');
-  
+
     const snapshot = await getDocs(directsRef);
-  
+
     let existingChat: any = null;
-  
+
     snapshot.forEach(docSnap => {
       const data = docSnap.data();
-  
+
       if (
         data['members'] &&
         JSON.stringify(data['members']) === JSON.stringify(members)
@@ -126,20 +124,20 @@ filteredUsers: User[] = [];
         existingChat = { id: docSnap.id, ...data };
       }
     });
-  
+
     // ✅ Chat existiert
     if (existingChat) {
       this.dashboardState.chatType.set('directs');
       this.dashboardState.chatId.set(existingChat.id);
       return;
     }
-  
+
     // ❌ Chat existiert nicht → erstellen
     const newChatRef = await addDoc(directsRef, {
       members,
       createdAt: new Date().toISOString()
     });
-  
+
     this.dashboardState.chatType.set('directs');
     this.dashboardState.chatId.set(newChatRef.id);
   }
@@ -196,36 +194,36 @@ filteredUsers: User[] = [];
   }
 
   async openThread(message: any) {
-    if (this.dashboardState.channelId()){
-    // 🔴 FALL: Thread existiert NICHT
-    if (!message.threadId) {
-  
-      const threadRef = await addDoc(
-        collection(this.firestore, 'threads'),
-        {
-          parentMessageId: message.id,
-          channelId: this.dashboardState.channelId(),
-          createdAt: new Date().toISOString()
-        }
-      );
-  
-      // 🔥 WICHTIG: threadId in Message speichern!
-      await updateDoc(
-        doc(this.firestore, `channels/${this.dashboardState.channelId()}/messages/${message.id}`),
-        {
-          threadId: threadRef.id
-        }
-      );
-  
-      this.dashboardState.threadId.set(threadRef.id);
-  
-    } else {
-      // ✅ Thread existiert
-      this.dashboardState.threadId.set(message.threadId);
+    if (this.dashboardState.channelId()) {
+      // 🔴 FALL: Thread existiert NICHT
+      if (!message.threadId) {
+
+        const threadRef = await addDoc(
+          collection(this.firestore, 'threads'),
+          {
+            parentMessageId: message.id,
+            channelId: this.dashboardState.channelId(),
+            createdAt: new Date().toISOString()
+          }
+        );
+
+        // 🔥 WICHTIG: threadId in Message speichern!
+        await updateDoc(
+          doc(this.firestore, `channels/${this.dashboardState.channelId()}/messages/${message.id}`),
+          {
+            threadId: threadRef.id
+          }
+        );
+
+        this.dashboardState.threadId.set(threadRef.id);
+
+      } else {
+        // ✅ Thread existiert
+        this.dashboardState.threadId.set(message.threadId);
+      }
+
+      this.dashboardState.openChatAnswers.set(true);
     }
-  
-    this.dashboardState.openChatAnswers.set(true);
-  }
   }
 
   addUserToChannel() {
@@ -241,10 +239,40 @@ filteredUsers: User[] = [];
     return Object.entries(message?.reactions || {}) as [string, string[]][];
   }
 
-openReactionDialog(messageId:any){
-  const dialogRef = this.dialog.open(ReactionsDialog);
-  this.dashboardState.messageId.set(messageId);
-}
+  openReactionDialog(messageId: any) {
+    const dialogRef = this.dialog.open(ReactionsDialog);
+    this.dashboardState.messageId.set(messageId);
+  }
+
+  getDateLabel(date: any): string {
+    const d = new Date(date);
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+
+    const isSameDay = (a: Date, b: Date) =>
+      a.getDate() === b.getDate() &&
+      a.getMonth() === b.getMonth() &&
+      a.getFullYear() === b.getFullYear();
+
+    if (isSameDay(d, today)) return 'Heute';
+    if (isSameDay(d, yesterday)) return 'Gestern';
+
+    return d.toLocaleDateString('de-AT'); // oder de-DE
+  }
+
+  shouldShowDateDivider(messages: any[], index: number): boolean {
+    if (index === 0) return true;
+
+    const current = new Date(messages[index].createdAt);
+    const previous = new Date(messages[index - 1].createdAt);
+
+    return (
+      current.getDate() !== previous.getDate() ||
+      current.getMonth() !== previous.getMonth() ||
+      current.getFullYear() !== previous.getFullYear()
+    );
+  }
 
   constructor() {
   }

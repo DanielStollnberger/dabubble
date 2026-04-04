@@ -266,3 +266,29 @@ form {
         object-fit: cover;
     }
 }
+
+.date-divider {
+    text-align: center;
+    margin: 16px 0;
+    font-size: 12px;
+    color: gray;
+    position: relative;
+  }
+  
+  .date-divider::before,
+  .date-divider::after {
+    content: '';
+    height: 1px;
+    background: #ccc;
+    position: absolute;
+    top: 50%;
+    width: 40%;
+  }
+  
+  .date-divider::before {
+    left: 0;
+  }
+  
+  .date-divider::after {
+    right: 0;
+  }

@@ -4,7 +4,7 @@ import { log } from 'node:console';
 import { collectionData, docData, Firestore } from '@angular/fire/firestore';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Observable, of, switchMap } from 'rxjs';
-import { addDoc, collection, doc, getDoc, increment, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, increment, orderBy, query, updateDoc } from 'firebase/firestore';
 import { threadId } from 'node:worker_threads';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { UserService } from '../../../services/user.service';
@@ -68,9 +68,12 @@ export class ChatAnswers {
   threadMessages$ = toObservable(this.dashboardState.threadId).pipe(
     switchMap(threadId => {
       if (!threadId) return of([]);
-
+  
       return collectionData(
-        collection(this.firestore, `threads/${threadId}/messages`),
+        query(
+          collection(this.firestore, `threads/${threadId}/messages`),
+          orderBy('createdAt', 'asc') // 🔥 DAS IST DER FIX
+        ),
         { idField: 'id' }
       );
     })

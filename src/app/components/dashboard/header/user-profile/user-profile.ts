@@ -48,5 +48,8 @@ async logout() {
 
   this.dashboardState.userId.set(null);
   this.router.navigate(['/']);
+  this.dashboardState.chatId.set(null);
+  this.dashboardState.channelId.set(null);
+  this.dashboardState.chatType.set(null);
 }
 }

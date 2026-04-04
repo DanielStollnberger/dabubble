@@ -8,11 +8,17 @@
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    <mat-label>Avatar URL</mat-label>
-    <input matInput [(ngModel)]="user.avatar" name="avatar" placeholder="Image URL...">
+    <mat-label>Choose your Profile</mat-label>
+
+    <mat-select [(ngModel)]="user.avatar">
+      @for (pb of profilePictures; track pb) {
+      <mat-option [value]="pb">
+        <img [src]="pb" style="height: 80px;">
+      </mat-option>
+      }
+    </mat-select>
   </mat-form-field>
 
-  <!-- Optional Preview -->
   <div style="margin-top: 10px;">
     <img [src]="user.avatar" style="height: 130px; border-radius: 50%;">
   </div>
