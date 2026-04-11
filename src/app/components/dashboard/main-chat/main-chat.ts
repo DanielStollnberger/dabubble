@@ -101,6 +101,7 @@ export class MainChat {
   }
 
   async openOrCreateDirectChat(otherUserId: string) {
+    this.resetSearch();
     const myId = this.dashboardState.userId();
 
     if (!myId) return;
@@ -191,6 +192,8 @@ export class MainChat {
     this.dashboardState.chatType.set(null);
     this.dashboardState.chatId.set(null);
     this.dashboardState.channelId.set(null);
+
+    this.resetSearch();
   }
 
   async openThread(message: any) {
@@ -272,6 +275,11 @@ export class MainChat {
       current.getMonth() !== previous.getMonth() ||
       current.getFullYear() !== previous.getFullYear()
     );
+  }
+
+  resetSearch() {
+    this.searchValue = '';
+    this.filteredUsers = [];
   }
 
   constructor() {

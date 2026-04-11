@@ -11,8 +11,8 @@
         <mat-select [formControl]="selectedUsers" multiple>
             @if (users | async; as usersList) {
             @for (user of usersList; track user.id) {
-                @if (!user.isGuest) {
-                    <mat-option [value]="user">{{ user.name }}</mat-option>
+                @if (!user.isGuest && user.id != dashboardState.userId()) {
+                    <mat-option [value]="user.id">{{ user.name }}</mat-option>
                   }
             }
             }
@@ -44,7 +44,7 @@
         <mat-select [formControl]="selectedUsers" multiple>
             @if (users | async; as usersList) {
             @for (user of usersList; track user.id) {
-                @if (!user.isGuest) {
+                @if (!user.isGuest && user.id != dashboardState.userId()) {
                     <mat-option [value]="user.id">{{ user.name }}</mat-option>
                   }
             }
@@ -57,8 +57,11 @@
     <button mat-button mat-dialog-close>
         Cancel
     </button>
-    <button mat-button mat-dialog-close (click)="deleteChannel(dashboardState.channelId())" mat-dialog-close>
+    <button mat-button (click)="deleteChannel(dashboardState.channelId())" mat-dialog-close>
         Delete Channel
+    </button>
+    <button mat-button (click)="leaveChannel(dashboardState.channelId())" mat-dialog-close>
+        Leave Channel
     </button>
     <button mat-flat-button color="primary" (click)="saveChannelEdit(dashboardState.channelId())" mat-dialog-close>
         Save

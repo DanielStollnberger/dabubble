@@ -7,7 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { UserService } from '../../../../services/user.service';
 import { AsyncPipe } from '@angular/common';
-import { addDoc, arrayUnion, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { addDoc, arrayUnion, collection, deleteDoc, doc, updateDoc, arrayRemove } from 'firebase/firestore';
 import { DashboardStateService } from '../../../../state/dashboard-state.service';
 import { MatCardModule } from "@angular/material/card";
 import { docData, Firestore } from '@angular/fire/firestore';
@@ -46,23 +46,45 @@ export class AddChannelDialog {
         doc(this.firestore, `channels/${channelId}`), { idField: 'id' });
     })
   );
-
   async createChannel() {
     const ref = collection(this.firestore, 'channels');
-
-    await addDoc(ref, {
+  
+    const docRef = await addDoc(ref, {
       name: this.channelName,
-      members: (this.selectedUsers.value || []).map((user: any) => user.id),
+      members: [
+        this.dashboardState.userId(),
+        ...(this.selectedUsers.value || [])
+      ],
       createdBy: this.dashboardState.userId(),
       createdAt: new Date().toISOString()
     });
+  
+    // 🔥 HIER ist die ID
+    this.dashboardState.chatType.set('channel');
+    this.dashboardState.channelId.set(docRef.id);
   }
+
+
+  async leaveChannel(channelId: any) {
+    const ref = doc(this.firestore, 'channels', channelId);
+  
+    await updateDoc(ref, {
+      members: arrayRemove(this.dashboardState.userId())
+    });
+
+    this.dashboardState.chatType.set(null);
+    this.dashboardState.channelId.set(null);
+  }
+
   async saveChannelEdit(channelId: any) {
     const ref = doc(this.firestore, 'channels', channelId);
 
     await updateDoc(ref, {
       name: this.channelName,
-      members: this.selectedUsers.value || []
+      members: [
+        this.dashboardState.userId(),
+        ...(this.selectedUsers.value || [])
+      ]
     });
   }
   async deleteChannel(channelId: any) {

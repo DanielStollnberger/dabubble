@@ -50,13 +50,13 @@
         <mat-form-field class="example-full-width">
             <mat-label>Search user...</mat-label>
 
-            <input matInput [(ngModel)]="searchValue" (input)="onSearchChange()">
+            <input matInput [(ngModel)]="searchValue" (input)="onSearchChange()" (click)="onSearchChange()">
         </mat-form-field>
     </div>
 </mat-toolbar>
 <div class="search-results">
     @for (user of filteredUsers; track user.id) {
-    @if (user.id != dashboardState.userId()) {
+    @if (user.id != dashboardState.userId() && !user.isGuest) {
     <div class="result-item" (click)="openOrCreateDirectChat(user.id)">
         <img [src]="user?.avatar">
         {{ user.name }}
