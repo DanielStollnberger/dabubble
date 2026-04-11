@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatOption, MatSelectModule } from '@angular/material/select';
 import { createUserWithEmailAndPassword, getAuth, signInAnonymously } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 
@@ -18,13 +19,19 @@ import { doc, setDoc } from 'firebase/firestore';
     MatDialogTitle,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatOption,
+    MatSelectModule   // 👈 DAS fehlt meistens
   ],
   templateUrl: './signup-dialog.html',
   styleUrl: './signup-dialog.scss',
 })
 export class SignupDialog {
-
+  profilePictures:string[] = [
+    '/assets/img/profile.png',
+    '/assets/img/profile-two.png',
+    '/assets/img/profile-girl.png'
+  ];
   firestore = inject(Firestore);
 
   email: string = '';
