@@ -11,6 +11,7 @@ import { Firestore } from '@angular/fire/firestore';
 import { MatSelectModule } from '@angular/material/select';
 import { DashboardStateService } from '../../../state/dashboard-state.service';
 import { query, where } from 'firebase/firestore';
+import { UserService } from '../../../services/user.service';
 
 
 @Component({
@@ -36,7 +37,8 @@ export class Header {
   results: any[] = [];
   firestore = inject(Firestore);
   dashboardState = inject(DashboardStateService);
-
+  userService = inject(UserService);
+  users: any;
 
   async searchDirects() {
     if (!this.searchTerm.trim()) {
@@ -68,16 +70,36 @@ export class Header {
         ) {
           this.results.push({
             text: data['text'],
-            chatId: direct.id
+            chatId: direct.id,
+            members: direct.data()['members']
           });
         }
       });
     }
   }
   openDirect(result: any) {
-    console.log(result);
-    
-    // this.dashboardState.chatType.set('direct');
-    // this.dashboardState.channelId.set(result.chatId);
+    this.dashboardState.openChatAnswers.set(false);
+    this.dashboardState.channelId.set(null);
+    this.dashboardState.chatId.set(result.chatId);
+    this.dashboardState.chatType.set('directs');
+
+    this.results = [];
+  }
+
+  getOtherUser(direct: any) {
+    const myId = this.dashboardState.userId();
+  
+    if (!myId || !direct?.members || !this.users) return null;
+  
+    const otherId = direct.members.find((id: string) => id !== myId);
+  
+    return this.users.find((user: any) => user.id === otherId);
+  }
+
+  constructor(){
+    this.userService.getAllUsers().subscribe(users => {
+      this.users = users;
+    });
   }
 }
+

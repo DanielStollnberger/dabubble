@@ -10,10 +10,30 @@
         <app-user-profile></app-user-profile>
     </mat-toolbar>
 </section>
-<div class="search-results">
-    @for (result of results; track result) {
-    <div (click)="openDirect(result)">
-        {{ result.text }}
-    </div>
+<section class="header-section">
+
+    @if (results.length > 0) {
+      <div class="search-results">
+  
+        @for (result of results; track result) {
+          <div class="result-item" (click)="openDirect(result)">
+  
+            <img [src]="getOtherUser(result)?.avatar" style="width: 100px;">
+  
+            <div class="content">
+              <div class="text">
+                ... {{ result.text }}
+              </div>
+  
+              <div class="meta">
+                from the Chat with: {{ getOtherUser(result)?.name }}
+              </div>
+            </div>
+  
+          </div>
+        }
+  
+      </div>
     }
-</div>
+  
+  </section>
