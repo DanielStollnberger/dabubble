@@ -84,7 +84,7 @@
     }
     @if (message.type === 'system') {
     <div class="date-divider">
-        {{ getUserById(message.userId)?.name }} hat den Channel verlassen
+        {{ getUserById(message.userId)?.name }} left the Channel
     </div>
     } @else{
 
@@ -108,17 +108,28 @@
             <div class='reactions'>
                 @if (getReactionCount(message) > 0) {
                 @for (reaction of getReactions(message); track reaction[0]) {
-                <span style="color: black;">
+                <span class="reaction-item">
                     @if( reaction[1].length > 1 ){
-                    {{ reaction[1].length }}
+                    <span style="color: black;margin-right: 1px;">{{ reaction[1].length }}</span>
                     }
-                    {{ reaction[0] }}
+                    <span style="color: black;">{{ reaction[0] }}</span>
+
+                    <!-- HOVER BOX -->
+                    <div class="reaction-hover">
+                        @for (userId of reaction[1]; track userId) {
+                        <div class="reaction-user">
+                            <img [src]="getUserById(userId)?.avatar"
+                                style="width: 25px; height: 35px;object-fit: cover;">
+                            {{ getUserById(userId)?.name }}
+                        </div>
+                        }
+                    </div>
                 </span>
                 }
                 }
                 @if (dashboardState.chatType() === 'channel' && (message.replyCount || 0) > 0) {
                 <p (click)="openThread(message)">
-                    {{ message.replyCount }} Answers
+                    |<span style="margin-left: 2px;">{{ message.replyCount }} @if (message.replyCount > 1){Answers} @else {Answer}</span>
                 </p>
                 }
             </div>
@@ -154,17 +165,28 @@
             <div class='reactions'>
                 @if (getReactionCount(message) > 0) {
                 @for (reaction of getReactions(message); track reaction[0]) {
-                <span style="color: black;">
+                <span class="reaction-item">
                     @if( reaction[1].length > 1 ){
-                    {{ reaction[1].length }}
+                    <span style="color: black;margin-right: 1px;">{{ reaction[1].length }}</span>
                     }
-                    {{ reaction[0] }}
+                    <span style="color: black;">{{ reaction[0] }}</span>
+
+                    <!-- HOVER BOX -->
+                    <div class="reaction-hover">
+                        @for (userId of reaction[1]; track userId) {
+                        <div class="reaction-user">
+                            <img [src]="getUserById(userId)?.avatar"
+                                style="width: 25px; height: 35px;object-fit: cover;">
+                            {{ getUserById(userId)?.name }}
+                        </div>
+                        }
+                    </div>
                 </span>
                 }
                 }
                 @if (dashboardState.chatType() === 'channel' && (message.replyCount || 0) > 0) {
                 <p (click)="openThread(message)">
-                    {{ message.replyCount }} Answers
+                    |<span style="margin-left: 2px;">{{ message.replyCount }} @if (message.replyCount > 1){Answers} @else {Answer}</span>
                 </p>
                 }
             </div>
@@ -173,7 +195,7 @@
     }
     }
     }
-}
+    }
 </section>
 
 }

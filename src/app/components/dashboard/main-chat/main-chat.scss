@@ -42,21 +42,24 @@
     }
 }
 
-.search-results{
+.search-results {
     display: flex;
     flex-direction: column;
-    .result-item{
+
+    .result-item {
         background: #f4ded3;
         border-radius: 10px;
         margin-bottom: 2px;
         display: flex;
         align-items: center;
         padding: 10px 30px;
-        &:hover{
+
+        &:hover {
             background: #a52a2a16;
             cursor: pointer;
         }
-        img{
+
+        img {
             height: 50px;
         }
     }
@@ -152,7 +155,7 @@ form {
                 align-items: end;
             }
 
-            .reactions{
+            .reactions {
                 gap: 5px;
                 position: absolute;
                 right: 5px;
@@ -164,7 +167,8 @@ form {
                 display: flex;
                 flex-direction: row;
                 white-space: nowrap;
-                p{
+
+                p {
                     margin: 0;
                 }
             }
@@ -224,7 +228,8 @@ form {
                 flex: 1;
                 align-items: end;
             }
-            .reactions{
+
+            .reactions {
                 gap: 5px;
                 position: absolute;
                 left: 5px;
@@ -236,7 +241,8 @@ form {
                 display: flex;
                 flex-direction: row;
                 white-space: nowrap;
-                p{
+
+                p {
                     margin: 0;
                 }
             }
@@ -273,22 +279,60 @@ form {
     font-size: 12px;
     color: gray;
     position: relative;
-  }
-  
-  .date-divider::before,
-  .date-divider::after {
+}
+
+.date-divider::before,
+.date-divider::after {
     content: '';
     height: 1px;
     background: #ccc;
     position: absolute;
     top: 50%;
     width: 40%;
-  }
-  
-  .date-divider::before {
+}
+
+.date-divider::before {
     left: 0;
-  }
-  
-  .date-divider::after {
+}
+
+.date-divider::after {
     right: 0;
-  }
+}
+
+.reaction-item {
+    position: relative;
+    cursor: pointer;
+}
+
+.reaction-hover {
+    position: absolute;
+    top: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    background: #a52a2a;
+    color: white;
+    padding: 5px 9px;
+    border-radius: 8px;
+    white-space: nowrap;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+}
+
+.reaction-item:hover .reaction-hover {
+    opacity: 1;
+}
+
+.reaction-user {
+    font-size: 12px;
+    padding: 2px 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
