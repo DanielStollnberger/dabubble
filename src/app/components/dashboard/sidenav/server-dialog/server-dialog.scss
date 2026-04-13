@@ -1,0 +1,14 @@
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .label {
+    font-weight: 600;
+    opacity: 0.7;
+  }
+  
+  .value {
+    font-weight: 500;
+  }
