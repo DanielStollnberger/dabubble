@@ -66,12 +66,24 @@ export class AddChannelDialog {
 
 
   async leaveChannel(channelId: any) {
+    const userId = this.dashboardState.userId();
+  
     const ref = doc(this.firestore, 'channels', channelId);
   
     await updateDoc(ref, {
-      members: arrayRemove(this.dashboardState.userId())
+      members: arrayRemove(userId)
     });
-
+  
+    // 🔥 NEU: System Message schreiben
+    const messagesRef = collection(this.firestore, 'channels', channelId, 'messages');
+  
+    await addDoc(messagesRef, {
+      type: 'system',
+      action: 'leave',
+      userId: userId,
+      createdAt: new Date().toISOString()
+    });
+  
     this.dashboardState.chatType.set(null);
     this.dashboardState.channelId.set(null);
   }

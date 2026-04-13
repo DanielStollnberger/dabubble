@@ -78,10 +78,15 @@
     @let user = getUserById(message.senderId);
 
     @if (shouldShowDateDivider(messages, i)) {
-        <div class="date-divider">
-          {{ getDateLabel(message.createdAt) }}
-        </div>
-      }
+    <div class="date-divider">
+        {{ getDateLabel(message.createdAt) }}
+    </div>
+    }
+    @if (message.type === 'system') {
+    <div class="date-divider">
+        {{ getUserById(message.userId)?.name }} hat den Channel verlassen
+    </div>
+    } @else{
 
     @if (message.senderId == dashboardState.userId()) {
     <div class="message-self">
@@ -168,6 +173,7 @@
     }
     }
     }
+}
 </section>
 
 }
