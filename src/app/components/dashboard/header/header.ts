@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { DashboardStateService } from '../../../state/dashboard-state.service';
 import { query, where } from 'firebase/firestore';
 import { UserService } from '../../../services/user.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 
 @Component({
@@ -39,14 +40,18 @@ export class Header {
   dashboardState = inject(DashboardStateService);
   userService = inject(UserService);
   users: any;
+  cd = inject(ChangeDetectorRef);
+  searchId = 0;
 
   async searchDirects() {
     if (!this.searchTerm.trim()) {
+      this.searchId++; // ❗ ALLE alten Requests invalidieren
       this.results = [];
+      this.cd.detectChanges();
       return;
     }
-
-    this.results = [];
+    const currentSearch = ++this.searchId;
+    const results: any[] = [];
 
     const currentUserId = this.dashboardState.userId();
 
@@ -68,7 +73,7 @@ export class Header {
         if (
           data['text']?.toLowerCase().includes(this.searchTerm.toLowerCase())
         ) {
-          this.results.push({
+          results.push({
             text: data['text'],
             chatId: direct.id,
             members: direct.data()['members']
@@ -76,7 +81,14 @@ export class Header {
         }
       });
     }
+
+    // ❗ WICHTIG: nur letzte Suche darf setzen
+    if (currentSearch === this.searchId && this.searchTerm.trim()) {
+      this.results = results;
+      this.cd.detectChanges();
+    }
   }
+
   openDirect(result: any) {
     this.dashboardState.openChatAnswers.set(false);
     this.dashboardState.channelId.set(null);
@@ -84,19 +96,20 @@ export class Header {
     this.dashboardState.chatType.set('directs');
 
     this.results = [];
+    this.searchTerm = '';
   }
 
   getOtherUser(direct: any) {
     const myId = this.dashboardState.userId();
-  
+
     if (!myId || !direct?.members || !this.users) return null;
-  
+
     const otherId = direct.members.find((id: string) => id !== myId);
-  
+
     return this.users.find((user: any) => user.id === otherId);
   }
 
-  constructor(){
+  constructor() {
     this.userService.getAllUsers().subscribe(users => {
       this.users = users;
     });
