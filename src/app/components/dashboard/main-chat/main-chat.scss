@@ -336,3 +336,9 @@ form {
     align-items: center;
     gap: 5px;
 }
+
+@media(max-width:1000px){
+    .hidden-phone{
+        display: none;
+    }
+    }

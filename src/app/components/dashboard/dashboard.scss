@@ -53,7 +53,7 @@ section {
     gap: 20px;
 
     app-sidenav {
-        width: 300px;
+        min-width: 300px;
         background: rgba(150, 73, 1, 0.2);
         height: calc(100vh - 120px);
         border-radius: 20px;
@@ -82,3 +82,13 @@ section {
         position: relative;
     }
 }
+
+@media(max-width:1000px){
+    app-sidenav {
+        min-width: 100%!important;
+    }
+
+    .hidden-phone{
+        display: none;
+    }
+    }

@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { effect, Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -12,4 +12,21 @@ export class DashboardStateService {
   openChatAnswers = signal<boolean>(false);
   editChannel = signal<boolean>(false);
   messageId = signal<string | null>(null);
+  chatView = signal<string | null>('sidenav');
+
+  constructor() {
+    effect(() => {
+      const chatId = this.chatId();
+      const threadId = this.openChatAnswers();
+      const channelId = this.channelId();
+
+      if (threadId) {
+        this.chatView.set('thread');
+      } else if (chatId || channelId) {
+        this.chatView.set('chat');
+      } else {
+        this.chatView.set('sidenav');
+      }
+    });
+  }
 }

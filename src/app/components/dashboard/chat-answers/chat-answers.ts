@@ -135,6 +135,7 @@ export class ChatAnswers {
   }
 
   closeThread() {
+    this.dashboardState.chatView.set('chat');
     this.dashboardState.openChatAnswers.set(false);
   }
 

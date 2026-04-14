@@ -12,7 +12,7 @@
     <div class="chat-header-users">
         @for (userId of channel?.['members'] ?? []; track userId) {
         @if (getUserById(userId); as user) {
-        <div class="channel-users">
+        <div class="channel-users hidden-phone">
             <img [src]="user.avatar">
         </div>
         }

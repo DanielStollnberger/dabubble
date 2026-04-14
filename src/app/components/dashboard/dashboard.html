@@ -2,19 +2,19 @@
     <app-header></app-header>
     <div class="main-content">
         @if (sidenavIsOpen) {
-        <button (click)="toggleSidenav()" class="sidenav-button">Close Chats</button>
+        <button (click)="toggleSidenav()" class="sidenav-button hidden-phone">Close Chats</button>
         } @else {
-        <button (click)="toggleSidenav()" class="sidenav-button">Open Chats</button>
+        <button (click)="toggleSidenav()" class="sidenav-button hidden-phone">Open Chats</button>
         }
         @if(sidenavIsOpen){
-        <app-sidenav></app-sidenav>
+        <app-sidenav [class.hidden-phone]="dashboardState.chatView() !== 'sidenav'"></app-sidenav>
         }
-        <app-main-chat [class.sidenav-closed]="!sidenavIsOpen"></app-main-chat>
+        <app-main-chat [class.sidenav-closed]="!sidenavIsOpen" [class.hidden-phone]="dashboardState.chatView() !== 'chat'"></app-main-chat>
         @if (dashboardState.openChatAnswers()) {
             @if (dashboardState.openChatAnswers()) {
-                <button (click)="closeChatAnswers()" class="chat-answer-button" style="z-index: 10;">Close Answers</button>
+                <button (click)="closeChatAnswers()" class="chat-answer-button hidden-phone" style="z-index: 10;">Close Answers</button>
             }
-        <app-chat-answers></app-chat-answers>
+        <app-chat-answers [class.hidden-phone]="dashboardState.chatView() !== 'thread'"></app-chat-answers>
         }
     </div>
 </section>
