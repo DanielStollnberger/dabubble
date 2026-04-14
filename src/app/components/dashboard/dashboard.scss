@@ -83,12 +83,20 @@ section {
     }
 }
 
-@media(max-width:1000px){
+@media(max-width:1000px) {
     app-sidenav {
-        min-width: 100%!important;
+        min-width: 100% !important;
     }
 
-    .hidden-phone{
+    app-main-chat {
+        height: 90vh;
+    }
+
+    app-chat-answers {
+        height: 90vh;
+    }
+
+    .hidden-phone {
         display: none;
     }
-    }
+}

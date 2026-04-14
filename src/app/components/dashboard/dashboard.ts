@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,13 +34,20 @@ export class Dashboard {
   sidenavIsOpen: boolean = true;
   userId: any;
   dashboardState = inject(DashboardStateService);
+  
 
   constructor() {
-
+    effect(() => {
+      const userId = this.dashboardState.userId();
+  
+      if (userId) {
+        this.dashboardState.dashboardReady.set(true);
+      }
+    });
   }
   
   ngOnInit() {
-    
+   
   }
 
   toggleSidenav() {

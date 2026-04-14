@@ -13,6 +13,7 @@ export class DashboardStateService {
   editChannel = signal<boolean>(false);
   messageId = signal<string | null>(null);
   chatView = signal<string | null>('sidenav');
+  dashboardReady = signal<boolean>(false);
 
   constructor() {
     effect(() => {

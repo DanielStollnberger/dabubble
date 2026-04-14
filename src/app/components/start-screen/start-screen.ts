@@ -16,9 +16,9 @@ import { Firestore } from '@angular/fire/firestore';
   selector: 'app-start-screen',
   imports: [
     MatCardModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatButtonModule
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
   ],
   templateUrl: './start-screen.html',
   styleUrl: './start-screen.scss',
@@ -34,20 +34,26 @@ export class StartScreen {
     try {
       const auth = getAuth();
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-  
+
       const uid = userCredential.user.uid;
-  
+
+      // 🔥 USER in State setzen
+      this.dashboardState.userId.set(uid);
+
+      // 🔥 Loader starten (noch nicht ready!)
+      this.dashboardState.dashboardReady.set(false);
+
       // 🔥 FIX
       this.zone.run(() => {
         this.router.navigate([`/dashboard`]);
       });
-  
+
     } catch (error) {
       console.error(error);
     }
   }
 
-  openSignup(){
+  openSignup() {
     this.dialog.open(SignupDialog);
   }
 
@@ -57,10 +63,10 @@ export class StartScreen {
     this.dashboardState.chatType.set(null);
     this.dashboardState.channelId.set(null);
     const auth = getAuth();
-  
+
     const userCredential = await signInAnonymously(auth);
     const user = userCredential.user;
-  
+
     const uid = user.uid;
     await setDoc(doc(this.firestore, `users/${uid}`), {
       id: uid,
